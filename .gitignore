@@ -140,7 +140,7 @@ celerybeat.pid
 # Environments
 .env
 .venv
-.project_env
+project_env/
 env/
 venv/
 ENV/
