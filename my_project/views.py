@@ -12,5 +12,5 @@ def home(request):
 
   # print(f'employees are {employees}')
 
-  # return render(request,'home.html', context)
-  return HttpResponse('hello world')
+  return render(request,'main_project/home.html', context)
+  # return HttpResponse('hello world')
