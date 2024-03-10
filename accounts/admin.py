@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.admin import UserAdmin 
 
 
-from .models import User
+from .models import User, UserProfile
 
 class CustomerUserAdmin(UserAdmin):
   list_display=(
@@ -23,3 +23,4 @@ class CustomerUserAdmin(UserAdmin):
 # Register your models here.
 
 admin.site.register(User,CustomerUserAdmin)
+admin.site.register(UserProfile)
