@@ -14,4 +14,12 @@ urlpatterns = [
   path('dashboardVendor/'  , views.dashboardVendor  , name='dashboardVendor')  ,  
  
   path('dashboardAdmin/'   , views.dashboardAdmin   , name='dashboardAdmin')  ,  
+  # called from email
+  path('activate/<uidb64>/<token>/', views.activate, name ='activate'),
+
+  path('forgot_Password/', views.forgot_Password, name ='forgot_Password'),  
+  path('reset_Password_validate/<uidb64>/<token>/', views.reset_Password_validate, name ='reset_Password_validate'),    
+  path('reset_Password/', views.reset_Password, name ='reset_Password'),  
+
+
 ]
