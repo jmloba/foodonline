@@ -1,17 +1,40 @@
 from django.shortcuts import redirect, render, HttpResponse
+from django.contrib import messages, auth
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 from vendor.forms import VendorRegistrationForm
 from .forms import UserForm
 from .models import User, UserProfile
 from accounts.models import UserProfile
-from django.contrib import messages
+from accounts.utils import detectUser
+from django.core.exceptions import PermissionDenied
 
 from .error_printscr import print_message
 
+'''
+restrict the vendor from accessing customer page
+restrict the customer from accessing vendor page
+'''
+def check_role_vendor(user):
+  if user.role == 1: # role is vendor
+    return True
+  else:
+    raise PermissionDenied
 
-# Create your views here.
+def check_role_customer(user):
+  if user.role == 2: # role is customer
+    return True
+  else:
+    raise PermissionDenied
+
+
+
 def registerVendor(request):
-  if request.method=='POST':
+  if request.user.is_authenticated:
+      messages.warning(request,'You are already logged in ')
+      return redirect('dashboard')
+  elif request.method=='POST':  
+
     mess = f'  **joven** register vendor  request.POST ------->:{request.POST}'
     print_message(mess)
     
@@ -59,7 +82,12 @@ def registerVendor(request):
 
 
 def registerUser(request):
-  if request.method=='POST':
+  if request.user.is_authenticated:
+      messages.warning(request,'You are already logged in ')
+      return redirect('dashboard')
+  elif request.method=='POST':  
+
+
     mess = f'  **joven** registeer user request.POST ------->:{request.POST}'
     print_message(mess)
     
@@ -109,4 +137,70 @@ def registerUser(request):
 
   context = {'form': form,  }
   return render(request,'accounts/registerUser.html',context )
+
+def login(request):
+  if request.user.is_authenticated:
+      messages.warning(request,'You are already logged in ')
+      return redirect('myAccount')
+  elif request.method=='POST':
+    email =request.POST['email']
+    password =request.POST['password']
+    user = auth.authenticate(email=email, password=password)
+    if user is not None:
+      auth.login(request,user)
+      messages.success(request,'logged in successfully')         
+      return redirect('myAccount')
+
+    else:  
+      messages.warning(request,'Invalid login credentials ')
+      return redirect('login')
+ 
+  return render(request,'accounts/login.html')
+
+def logout(request):
+  auth.logout(request)
+  messages.success(request,'logged out successfully')
+
+  return redirect('login')
+
+# def dashboard(request):
+#   return render(request,'accounts/dashboard.html')
+
+
+''' this function is beinng called from utils.py
+def detectUser(user):
+  if user.role == 1:
+    redirectUrl ='dashboardVendor'
+  elif  user.role == 2:
+    redirectUrl ='dashboardCustomer'
+  elif  user.role == None and user.is_superadmin:
+    redirectUrl ='/admin'
+
+  return redirectUrl
+
+'''
+@login_required(login_url='login')
+def myAccount(request):
+  # these function will call utils.py
+  user = request.user
+  redirectUrl= detectUser(user)
+  return redirect(redirectUrl)
+
+@login_required(login_url='login')
+@user_passes_test(check_role_customer)
+def dashboardCustomer(request):
+  return render(request,'accounts/dashboardCustomer.html')
+
+@login_required(login_url='login')
+@user_passes_test(check_role_vendor)
+def dashboardVendor(request):
+  return render(request,'accounts/dashboardVendor.html')
+
+@login_required(login_url='login')
+def dashboardAdmin(request):
+  return render(request,'accounts/dashboardAdmin.html')
+
+
+
+
 

@@ -1,0 +1,13 @@
+{% extends 'main_project/base.html'%}
+
+{% load static %}
+{% block content%}
+
+<h3>welcome {{user.username}}</h3>
+{% include 'include/alerts.html' %}
+dashboard customer
+<p>{{user.get_role}}</p>
+
+
+
+{% endblock %}
