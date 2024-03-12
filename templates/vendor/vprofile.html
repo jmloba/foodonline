@@ -1,51 +1,20 @@
 {% extends 'main_project/base.html'%}
 
 {% load static %}
-{% block content%}
 
-<h3>welcome {{user.username}}</h3>
+{% block content%}
 {% include 'include/alerts.html' %}
 
-<p>{{user.get_role}}</p>
 		<!-- Main Section Start -->
 		<div class="main-section">
-			<div class="page-section restaurant-detail-image-section" style=" background: url( {% static 'extra-images/banner-img.jpg' %}) no-repeat scroll 0 0 / cover;">
-				<!-- Container Start -->
-				<div class="container">
-					<!-- Row Start -->
-					<div class="row">
-						<!-- Column Start -->
-						<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-							<div class="company-info-detail">
-								<div class="company-info">
-									<div class="img-holder">
-										<figure>
-											<img src="{% static 'extra-images/listing-logo18.png' %}" alt="">
-										</figure>
-									</div>
+      {% include 'include/cover.html' %}
 
-									<div class="text-holder">
-										<span class="restaurant-title">joven customer</span>
-										<div class="text">
-											<i class="icon-location"></i>
-											<p>my tel 0944-44-44</p>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- Column End -->
-					</div>
-					<!-- Row End -->
-				</div>
-				<!-- Container End -->
-			</div>
 			<div class="page-section account-header buyer-logged-in">
 				<div class="container">
 					<div class="row">
 						<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
               <!-- load sidebar -->
-              {% include 'include/sidebar_cust.html' %}
+              {% include 'include/sidebar_vend.html' %}
 
 						</div>
 						<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">

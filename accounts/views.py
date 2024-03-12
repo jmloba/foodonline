@@ -10,6 +10,7 @@ from django.core.exceptions import PermissionDenied
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode 
 
 from vendor.forms import VendorRegistrationForm
+from vendor.models import Vendor
 from .forms import UserForm
 from .models import User, UserProfile
 from accounts.models import UserProfile
@@ -206,7 +207,10 @@ def dashboardCustomer(request):
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def dashboardVendor(request):
-  return render(request,'accounts/dashboardVendor.html')
+    
+  vendor = Vendor.objects.get(user=request.user)
+  context={'vendor':vendor,}
+  return render(request,'accounts/dashboardVendor.html',context)
 
 @login_required(login_url='login')
 def dashboardAdmin(request):

@@ -1,0 +1,14 @@
+{% autoescape off %}
+
+ Hi {{user.first_name}}.
+
+ {% if is_approved %}
+ Congratulations, your restaurant/company has been approved by our admin team to put online   
+
+ {% else %}
+ Sorry , you are not eligible to publish your product in our marketplace. For more details, kindly email foodonline.jml@gmail.com
+  
+ {% endif %}
+
+
+{% endautoescape  %}
