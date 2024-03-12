@@ -13,3 +13,10 @@
   animation-duration : 8s;
   z-index : 2000;
 }
+
+.btn.btn-info{
+  padding: 3px 1.75em;
+    /* width: 240px; */
+    font-size: 12px;
+    cursor :pointer;
+}
