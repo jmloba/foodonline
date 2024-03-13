@@ -1,0 +1,92 @@
+{% extends 'main_project/base.html'%}
+
+{% load static %}
+
+{% block content%}
+{% include 'include/alerts.html' %}
+
+		<!-- Main Section Start -->
+		<div class="main-section">
+      {% include 'include/cover.html' %}
+
+			<div class="page-section account-header buyer-logged-in">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <!-- load sidebar -->
+              {% include 'include/sidebar_vend.html' %}
+
+						</div>
+						<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+							<div class="user-dashboard loader-holder">
+								<div class="user-holder">
+
+									<!-- section header  -->
+									{% include 'include/back-button.html' %}
+
+
+
+									<h5 class="text-uppercase "> Category : <span class="text-uppercase text-success"> {{category}}</span></h5>
+									<hr>	
+									<!-- buttons -->
+
+									
+
+									<!-- hoverable table -->
+                  {% if productItems %}  
+									<table class="table table-hover table-borderless">
+										<thead>
+											<tr>
+												<th class="text-left" scope="col">#</th>
+												<th class="text-left" scope="col">Image</th>
+												<th scope="col">Title</th>
+												<th scope="col">Price</th>
+
+											</tr>
+										</thead>
+										<tbody>
+											{% for item in productItems%}
+											<tr>
+												<td class="text-left">{{forloop.counter}}</td>
+                        <td class="text-left"><img src="{{ item.image.url}}" alt="food image" width="60"></td>
+												<td> 
+													<a href="#"><p class="mb-0 font-weight-bold">{{item.product_title}}</p></a>
+													<small class="text-muted">{{item.description}}</small>
+                        </td>  
+
+												<td>
+													<a href="#"><p class="mb-0 font-weight-bold">{{item.price}}</p></a>
+
+                        </td>  
+
+												<td> 
+													<a  href="#" ><i class="fa-solid fa-pencil " aria-hidden="true"></i></a> &nbsp;
+													<a  href="#" ><i class="fa-solid fa-trash text-danger" aria-hidden="true"></i></a>
+												</td>
+											</tr>
+											{% endfor %}
+									
+										</tbody>
+									</table>
+                  {% else %}
+                  <h5 class="text-center">no food items found</h5>
+                    <div class="div text-center">
+                      <a href="#" class="btn btn-success"><i class="fa-solid fa-plus"></i> &nbsp; Add item</a>
+
+                    </div>
+                  {% endif %}
+									<!-- hoverable table stops here -->
+							
+									
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Main Section End -->
+
+
+{% endblock %}

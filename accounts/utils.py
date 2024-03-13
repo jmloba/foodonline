@@ -44,3 +44,5 @@ def send_notification(mail_subject, mail_template, context):
   mail.send()
 
   return
+
+
