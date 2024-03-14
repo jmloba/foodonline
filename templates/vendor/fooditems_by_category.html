@@ -20,20 +20,17 @@
 						<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
 							<div class="user-dashboard loader-holder">
 								<div class="user-holder">
-
 									<!-- section header  -->
 									{% include 'include/back-button.html' %}
-
-
-
+<!-- header title									 -->
 									<h5 class="text-uppercase "> Category : <span class="text-uppercase text-success"> {{category}}</span></h5>
-									<hr>	
-									<!-- buttons -->
-
-									
+									<!-- <hr>	 -->
 
 									<!-- hoverable table -->
                   {% if productItems %}  
+
+									<a href="{% url 'product_item_add' %}" class="btn btn-success float-right m1">Add Food <i class="fa-solid fa-plus"></i></a>									
+
 									<table class="table table-hover table-borderless">
 										<thead>
 											<tr>
@@ -50,18 +47,26 @@
 												<td class="text-left">{{forloop.counter}}</td>
                         <td class="text-left"><img src="{{ item.image.url}}" alt="food image" width="60"></td>
 												<td> 
-													<a href="#"><p class="mb-0 font-weight-bold">{{item.product_title}}</p></a>
+													<a><p class="mb-0 font-weight-bold">{{item.product_title}}</p></a>
 													<small class="text-muted">{{item.description}}</small>
                         </td>  
 
 												<td>
-													<a href="#"><p class="mb-0 font-weight-bold">{{item.price}}</p></a>
-
+													<a><p class="mb-0 font-weight-bold">{{item.price}}</p></a>
                         </td>  
+												<td>
+													{% if item.is_available %}
+													<span class="badge badge-success">Availabe</span>
+													{% else %}
+													<span class="badge badge-danger"> Not Availabe</span>
+													{% endif %}
+												</td>
 
 												<td> 
-													<a  href="#" ><i class="fa-solid fa-pencil " aria-hidden="true"></i></a> &nbsp;
-													<a  href="#" ><i class="fa-solid fa-trash text-danger" aria-hidden="true"></i></a>
+													<a  href="{% url 'product_item_edit' item.id %}"style="color:unset" ><i class="fa-solid fa-pencil " aria-hidden="true"></i></a> &nbsp; &nbsp;&nbsp;
+													
+													<a  href="{% url 'product_item_delete' item.id %}" onclick="return confirm('Are you sure you want to delete this product?')"><i class="fa-solid fa-trash text-danger" aria-hidden="true"></i></a>
+
 												</td>
 											</tr>
 											{% endfor %}
@@ -71,8 +76,7 @@
                   {% else %}
                   <h5 class="text-center">no food items found</h5>
                     <div class="div text-center">
-                      <a href="#" class="btn btn-success"><i class="fa-solid fa-plus"></i> &nbsp; Add item</a>
-
+                      <a href="{% url 'product_item_add' %}" class="btn btn-success"><i class="fa-solid fa-plus"></i> &nbsp; Add item</a>
                     </div>
                   {% endif %}
 									<!-- hoverable table stops here -->

@@ -1,20 +1,16 @@
 from django import forms
 
-from .models import Category
+from .models import Category, Product_Menu
+from accounts.validators import allow_only_images_validator
 
 class CategoryForm(forms.ModelForm):
-  # password         = forms.CharField(widget=forms.PasswordInput())
-  # confirm_password = forms.CharField(widget=forms.PasswordInput())
-
   class Meta:
     model = Category
     fields=['category_name','description']
 
-  # def clean(self):
-  #   cleaned_data = super(UserForm,self).clean()
-  #   password = cleaned_data.get('password')
-  #   confirm_password = cleaned_data.get('confirm_password')
-  #   if password != confirm_password:
-  #     mess = f'password does not match ------->:{password} / {confirm_password}'
-  #     print_message(mess)
-  #     raise forms.ValidationError('Password does not match')
+class ProductItemForm(forms.ModelForm):
+  image = forms.FileField(widget=forms.FileInput(attrs={'class':'btn btn-info w-100'}),validators=[allow_only_images_validator])
+  class Meta:
+    model = Product_Menu    
+    fields=['category','product_itemno', 'product_title','description','cost_price','price', 'image','is_available',]
+

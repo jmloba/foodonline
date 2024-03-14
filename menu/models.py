@@ -37,6 +37,7 @@ class Product_Menu(models.Model):
 
   product_itemno = models.CharField(max_length=20, unique=True)
   cost_price    = models.DecimalField(max_digits=10, decimal_places=2)
+  
   image = models.ImageField(upload_to ='product_images' ) 
   is_available = models.BooleanField(default=True)
 
