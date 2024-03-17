@@ -1,16 +1,12 @@
 from django.shortcuts import render, HttpResponse
 # from employees.models import Employee
+from vendor.models import Vendor
 
 
 def home(request):
-
-  # # get the list of employees that is stored in the database
-  # employees = Employee.objects.all()
-
   name = 'joven'
-  context={'name':name}
 
-  # print(f'employees are {employees}')
+  vendors = Vendor.objects.filter(is_approved=True, user__is_active=True)[:8]
+  context={'name':name, 'vendors':vendors}
 
   return render(request,'main_project/home.html', context)
-  # return HttpResponse('hello world')

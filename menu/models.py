@@ -27,7 +27,7 @@ class Category(models.Model):
 #FoodItem
 class Product_Menu(models.Model):
   vendor        = models.ForeignKey(Vendor,on_delete=models.CASCADE)
-  category      = models.ForeignKey(Category,on_delete=models.CASCADE)
+  category      = models.ForeignKey(Category,on_delete=models.CASCADE,related_name ='product_items')
   #food title = product_title
 
   product_title = models.CharField(max_length=50)

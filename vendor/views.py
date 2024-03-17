@@ -144,7 +144,8 @@ def product_item_add(request):
       print(form.errors)
   else:
     form = ProductItemForm()
-    form.fields['category'].queryset = Category.objects(vendor=get_vendor(request))
+    # filter category
+    form.fields['category'].queryset = Category.objects.filter(vendor=get_vendor(request))
 
 
   context={'form':form,}

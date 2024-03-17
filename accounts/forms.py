@@ -1,6 +1,6 @@
 from django import forms
 from .models import User, UserProfile
-from .error_printscr import print_message
+
 from .validators import allow_only_images_validator
 
 
@@ -15,8 +15,7 @@ class UserForm(forms.ModelForm):
     password = cleaned_data.get('password')
     confirm_password = cleaned_data.get('confirm_password')
     if password != confirm_password:
-      mess = f'password does not match ------->:{password} / {confirm_password}'
-      print_message(mess)
+
       raise forms.ValidationError('Password does not match')
   
 
