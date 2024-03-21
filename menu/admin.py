@@ -3,7 +3,7 @@ from .models import Category, Product_Menu
 
 
 class CategoryAdmin(admin.ModelAdmin):
-  list_display=['category_name','slug','description']  
+  list_display=['vendor','category_name','slug','description']  
   ordering=('category_name',)
   prepopulated_fields={'slug':('category_name',)}
 

@@ -19,8 +19,13 @@ class CustomerUserAdmin(UserAdmin):
   list_filter =()
   fieldsets=()
 
+class  UerProfileAdmin(admin.ModelAdmin):
+  list_display= ['id','user','country','latitude','longitude','location']
+  filter_horizontal =()
+  list_filter =()
+  fieldsets=()
 
 # Register your models here.
 
 admin.site.register(User,CustomerUserAdmin)
-admin.site.register(UserProfile)
+admin.site.register(UserProfile,UerProfileAdmin)

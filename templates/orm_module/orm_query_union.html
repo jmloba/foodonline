@@ -1,0 +1,66 @@
+{% extends 'main_project/base.html'%}
+
+{% load static %}
+
+{% block content %}
+<div class="main-section">
+  <div class="page-section nopadding cs-nomargin" style="margin-top: 0px;padding-top: 60px;padding-bottom: 10px;margin-bottom: 0px;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+          <div class="row">
+            <aside class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+              
+            </aside>
+            <div class="col-lg-7 col-md-7 col-sm-12 col-xs-12">
+              <div class="listing-sorting-holder">
+                <div class="row">
+                  <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h4>Routine name : {{routine_name}}</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="listing simple">
+                <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">First</th>
+                      <th scope="col">Last</th>
+                      <th scope="col">Handle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {%for item in new_list %}
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>{{item.firstname}}</td>
+                      <td>Otto</td>
+                      <td>@mdo</td>
+                    </tr>
+                    {% endfor %}
+                  
+                  </tbody>
+                </table>
+
+
+        
+              </div>
+              
+            </div>
+            <!-- --- other  : queries -->
+
+            {{myquery}}
+            <br><br>
+            connection querries :
+            {{connection_query}}
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock  %}

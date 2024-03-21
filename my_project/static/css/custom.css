@@ -21,3 +21,9 @@
   cursor :pointer;
   
   }
+ select, 
+ .main-search.fancy .field-holder input[type="text"] {
+  color: blue !important; 
+  font-weight: 500;
+  }
+  

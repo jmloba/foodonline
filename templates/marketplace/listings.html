@@ -16,6 +16,7 @@
               <div class="listing-sorting-holder">
                 <div class="row">
                   <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <h4>from listings.html</h4>
                     <h4>{{vendor_count}}  Restaurant's found</h4>
                   </div>
                 </div>
@@ -48,6 +49,13 @@
                         {% if vendor.user_profile.address and vendor.user_profile.province %}
                         <span><small>{{vendor.user_profile.address}}, {{vendor.user_profile.province}}</small></span>  
                         {% endif %}
+                        <br><br>
+                        {% if source_location %} 
+                        <span>
+                          <small><b>{{vendor.kms}}</b> km away from {{source_location}}</small>
+                        </span>
+                        {% endif %}
+                        
 
 
                       
