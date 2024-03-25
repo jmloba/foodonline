@@ -15,6 +15,7 @@ class Teacher(models.Model):
 class Student(models.Model):  
   firstname = models.CharField(max_length=25)
   lastname = models.CharField(max_length=25)
+  email = models.EmailField(max_length=50)
   age = models.IntegerField()
   classroom = models.IntegerField()
 

@@ -39,6 +39,7 @@ urlpatterns = [
     path('search/', martketplaceViews.search, name ='search'),
     path('orm_module/', include('orm_module.urls')),
     path('__debug__/',include(debug_toolbar.urls)),
+    path('testarea/', include('testarea.urls')),    
 
 
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

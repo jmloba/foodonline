@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'menu',
     'marketplace',
     'orm_module',
+    'testarea',
 ]
 
 MIDDLEWARE = [

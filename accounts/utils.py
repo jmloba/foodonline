@@ -48,4 +48,8 @@ def send_notification(mail_subject, mail_template, context):
 
   return
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+
+
 

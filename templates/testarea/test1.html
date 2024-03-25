@@ -1,0 +1,81 @@
+{% extends 'main_project/base.html'%}
+
+{% load static %}
+
+{% block content%}
+{% include 'include/alerts.html' %}
+
+		<!-- Main Section Start -->
+		<div class="main-section">
+      {% include 'include/cover.html' %}
+
+			<div class="page-section account-header buyer-logged-in">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <!-- load sidebar -->
+              {% include 'include/sidebar-test.html' %}
+
+						</div>
+						<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+							<div class="user-dashboard loader-holder">
+								<div class="user-holder">
+									<!-- section header  -->
+									{% include 'include/back-button.html' %}									
+									<h5 class="text-uppercase">Student List</h5>
+									<hr>	
+									<div>
+                    <table class="table table-striped table-borderless">
+                      <thead>
+                        <tr>
+                          <th scope="col">id</th>
+
+                          <th scope="col">Firstname</th>
+                          <th scope="col">LastName</th>
+                          <th scope="col">Age</th>
+                          <th scope="col">Email</th>
+                          <th scope="col">Classroom</th>
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for student in students %}
+                        <tr id="testarea-tr-{{student.id}}">
+                          <td>{{student.id}}</td>
+
+                          <td>{{student.firstname}}</td>
+                          <td>{{student.lastname}}</td>
+                          <td>{{student.age}}</td>
+                          <td>{{student.email}}</td>
+                          <td>{{student.classroom}}</td>
+                          <td>
+                          <a href="" class="testarea-remove"  data-url="{% url 'testremove_record' student.id %}">REmove</a>
+                          </td>
+
+                        </tr>
+                        {% endfor %}
+ 
+                      </tbody>
+                    </table>
+                 
+
+                    <form action="{% url 'test_main' %}" method="POST">
+                      {% csrf_token %}
+                      {{form.as_p}}
+                    
+                        <input type="submit" value="Submit form" class="submit-button">
+                    
+
+                    </form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Main Section End -->
+
+
+{% endblock %}

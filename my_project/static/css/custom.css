@@ -1,3 +1,15 @@
+:root{
+--color1 : #43766C;
+--color2 : #F8FAE5;
+--color3 : #B19470;
+--color4 : #76453B;
+--linked-in-blue: #0a66c2;
+--button-hover:#A94438;
+
+--color-white :#FBF9F1;
+
+}
+
 @keyframes show-toast{
   0%{bottom: -100%}
   20% {bottom: 100px}
@@ -21,9 +33,41 @@
   cursor :pointer;
   
   }
+  
  select, 
  .main-search.fancy .field-holder input[type="text"] {
   color: blue !important; 
-  font-weight: 500;
+  font-weight: 
+  500;
   }
-  
+
+table > tbody > tr > td{
+  border :none !important;
+}
+
+#opening_hours_form  select{
+ padding : 0 5px !important;
+
+
+}
+
+.btn-success.add-hour{
+  color:red;
+  width:120px;
+  padding :  5px 17px;
+}
+input.submit-button{
+  background-color: var(--linked-in-blue);
+  color : var(--color-white);
+  font-size: 16x;
+  border-radius :25px;
+  width : 120px;
+}
+input.submit-button:hover{
+  background-color: var(--button-hover);
+  color : yellow;
+  border-width: 1px;
+  border-color : yellow; 
+ 
+}
+

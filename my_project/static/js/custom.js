@@ -40,9 +40,6 @@ $(document).ready(function(){
     })
 
   })
-
-
-
   // -------------- decrease cart
 
   $('.decrease_cart').on('click',function(e){
@@ -86,8 +83,6 @@ $(document).ready(function(){
     })
   })
 
-
-
   $('.item_qty').each(function(){
       var the_id = $(this).attr('id')
       var qty = $(this).attr('data-qty')
@@ -128,7 +123,106 @@ $(document).ready(function(){
       }
     })
   })  
+  $('.add-hour').on('click',function(e){
+    e.preventDefault();
+    var day = document.getElementById('id_day').value
+    var from_hour = document.getElementById('id_from_hour').value
+    var to_hour = document.getElementById('id_to_hour').value
+    var is_closed = document.getElementById('id_is_closed').checked
+    var csrf_token = $('input[name=csrfmiddlewaretoken]').val()
 
+    // from form = add hidden input above button
+    var url = document.getElementById('add_hour_url').value
+
+    console.log('values from page : ',day,from_hour, to_hour, is_closed,csrf_token)
+
+
+    if(is_closed){
+      is_closed= 'True'
+      condition ="day != ''"
+    } else {
+      is_closed= 'False'
+      condition = "day != '' && from_hour != '' && to_hour != ''"
+    }
+
+    if (eval(condition)){
+      // swal('REady to add field','add the entry  to record','success')
+      $.ajax( {
+        type: 'POST',
+        url : url,
+        data : {
+          'day': day, 
+          'from_hour': from_hour, 
+          'to_hour':to_hour, 
+          'is_closed':is_closed,
+          'csrfmiddlewaretoken':csrf_token,
+        },
+        success : function(response){
+          if( response.status =='success'){
+            if (response.from_hour){
+              html ='<tr id="hour-'+response.id+'" ><td style="color: blue;"><b>'+response.day+'</b></td><td>'+response.from_hour+' - '+response.to_hour+'</td><td><a href="#" class="remove_item" data-url="/vendor/opening_hours/remove/'+response.id+'/">Remove</a></td></tr>'
+
+
+            }
+            else{
+              html ='<tr id="hour-'+response.id+' ><td style="color: blue;"><b>'+response.day+'</b></td><td>Closed</td><td><a href=""  class="remove_item" data-url="/vendor/opening_hours/remove/'+response.id+'/">Remove</a></td></tr>'
+
+            }
+            // append html to table
+            $('.opening_hours').append(html)
+            // reset the form 
+            document.getElementById('opening_hours_form').reset()
+          }else{
+            console.log('database message:',response.error)
+            swal(response.message,'','error')
+
+          }
+    
+        }
+
+      })
+    } else {
+      swal('Failed','Please fill the fields required', 'info')
+    }
+  })
+// ========================================================
+  $(document).on('click','.remove_item', function(e){
+    e.preventDefault();
+    url= $(this).attr('data-url');
+    console.log ('passed url is : ', url)
+    $.ajax({
+      type:'GET',
+      url:url,
+      success:function(response){
+          // console.log(response)
+          if (response.status=='success'){
+            document.getElementById("hour-"+response.id).remove()
+            // swal(response.status,response.message,'success')
+          }
+      }
+    })
+
+  });
+  // ========================================================
+  // test area
+  $(document).on('click','.testarea-remove', function(e){
+    e.preventDefault();
+    url= $(this).attr('data-url');
+    console.log ('passed url is : ', url)
+    $.ajax({
+      type:'GET',
+      url:url,
+      success:function(response){
+          // console.log(response)
+          if (response.status=='success'){
+            document.getElementById("testarea-tr-"+response.id).remove()
+            // swal(response.status,response.message,'success')
+          }
+      }
+    })
+
+  });
+  // ========================================================
   // delete the cart elment if the quanitty is 0
   function removeCartItem(cartItemQty, cart_id){
       if (cartItemQty <= 0 ){
@@ -152,23 +246,26 @@ $(document).ready(function(){
       $('#subtotal').html(subtotal);
       $('#tax').html(tax);
       $('#total').html(granndtotal);
-  
     }
   }
-
+ 
 });
 
+// ========================================================// ========================================================
 
 let autocomplete;
 
 function initAutoComplete(){
 autocomplete = new google.maps.places.Autocomplete(
+
     document.getElementById('id_address'),
     {
         types: ['geocode', 'establishment'],
         //default in this app is "IN" - add your country code
         componentRestrictions: {'country': ['ph']},
-    })
+    }
+    
+    )
 // function to specify what should happen when the prediction is clicked
 autocomplete.addListener('place_changed', onPlaceChanged);
 }
@@ -234,5 +331,3 @@ function onPlaceChanged (){
 
 
 }
-
-
