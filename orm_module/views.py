@@ -1,7 +1,7 @@
 
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Student, Teacher,Product, poly1Project, poly1ArtProject, poly1ResearchProject
+from .models import Student, Teacher,Product 
 from django.db import connection
 from django.db.models import Q
 
@@ -208,31 +208,3 @@ def product_all(request):
            }  
   return render(request,'orm_module/product_all.html', context)
 
-def polymorphic(request):
-  routine_name ='polymorphic sample 1'
-  '''create objects'''
-  # poly1Project.objects.create(topic="Department Party")
-  # poly1ArtProject.objects.create(topic="Painting with Tim", artist="T. Turner")
-  # poly1ResearchProject.objects.create(topic="Swallow Aerodynamics", supervisor="Dr. Winter")
-
-  ''' 
-  Use instance_of or not_instance_of for narrowing the result to specific subtypes:
-  >>> Project.objects.instance_of(ArtProject)
-[ <ArtProject:      id 2, topic "Painting with Tim", artist "T. Turner"> ]
-  '''
-
-  '''
-  >>> Project.objects.instance_of(ArtProject) | Project.objects.instance_of(ResearchProject)
-[ <ArtProject:      id 2, topic "Painting with Tim", artist "T. Turner">,
-  <ResearchProject: id 3, topic "Swallow Aerodynamics", supervisor "Dr. Winter"> ]
-  '''
-
-  '''
-  Polymorphic filtering: Get all projects where Mr. Turner is involved as an artist or supervisor (note the three underscores):
-  -----
-  >>> Project.objects.filter(Q(ArtProject___artist='T. Turner') | Q(ResearchProject___supervisor='T. Turner'))
-[ <ArtProject:      id 2, topic "Painting with Tim", artist "T. Turner">,
-  <ResearchProject: id 4, topic "Color Use in Late Cubism", supervisor "T. Turner"> ]
-  '''
-  # return render(request,'orm_module/orm_polymorphic.html', context)
-  return HttpResponse('ab')

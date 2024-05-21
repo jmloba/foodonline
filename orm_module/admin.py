@@ -1,5 +1,5 @@
 from django.contrib import admin
-from polymorphic.admin import PolymorphicChildModelAdmin, PolymorphicParentModelAdmin
+
 
 from .models import Teacher, Student, ItemA,BaseItem, ItemB, ItemC, ItemD, Product, Book, Cupboard 
 

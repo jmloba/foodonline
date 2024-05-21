@@ -1,6 +1,6 @@
 from datetime import timezone
 from django.db import models
-from polymorphic.models import PolymorphicModel
+
 # Create your models here.
 
 
@@ -99,14 +99,5 @@ class Cupboard(Product):
   shelves = models.IntegerField()
   author = models.CharField(max_length=255)
 
-#========= polymorphic models
-class poly1Project(PolymorphicModel):
-    topic = models.CharField(max_length=30)
-
-class poly1ArtProject(poly1Project):
-    artist = models.CharField(max_length=30)
-
-class poly1ResearchProject(poly1Project):
-    supervisor = models.CharField(max_length=30)
 
 

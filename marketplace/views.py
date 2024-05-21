@@ -130,6 +130,7 @@ def cart(request):
   context ={"cart_items":cart_items}
   return render(request,'marketplace/cart.html',context)
 
+
 def delete_cart(request,cart_id):
     if request.user.is_authenticated:
       if  is_ajax(request=request):
@@ -137,6 +138,8 @@ def delete_cart(request,cart_id):
           # check if cart item exist
           cart_item = Cart.objects.get(user = request.user, id=cart_id)
           if cart_item:
+            print(f'deleting item in cart_item : {cart_item.product_item}, --->> quantity : {cart_item.quantity}')
+            
             cart_item.delete()
             return  JsonResponse({'status':'Success',
                                   'message':'cart item has been deleted',

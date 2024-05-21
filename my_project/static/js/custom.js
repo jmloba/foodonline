@@ -1,11 +1,10 @@
-
-
 // cart quantity total
 $(document).ready(function(){
   // -------------- add to cart
 
   $('.add_to_cart').on('click',function(e){
     e.preventDefault();
+    
     product_item  = $(this).attr('data-id');
     url = $(this).attr('data-url');
     data ={product_item: product_item,} 
@@ -31,7 +30,7 @@ $(document).ready(function(){
           // display subtotals and apply_cart_amounts() 
           apply_cart_amounts(
             response.cart_amount['subtotal'],
-            response.cart_amount['tax'],
+            response.cart_amount['tax_dict'],
             response.cart_amount['grand_total'],
             )
           
@@ -67,7 +66,7 @@ $(document).ready(function(){
 
           apply_cart_amounts(
             response.cart_amount['subtotal'],
-            response.cart_amount['tax'],
+            response.cart_amount['tax_dict'],
             response.cart_amount['grand_total'],
             )          
           if (window.location.pathname ='/cart/') {
@@ -96,33 +95,42 @@ $(document).ready(function(){
 
   $('.delete_cart').on('click',function(e){
     e.preventDefault();
+  
     cart_id  = $(this).attr('data-id');
     url = $(this).attr('data-url');
- 
+  
+    console.log ('** delete icon -->> delete cart')
+    console.log('cart-id', cart_id )
+    console.log('data-url :', url)
+  
     $.ajax({
       type: 'GET',
       url : url,
       success: function(response){
         console.log(response)
-        // to change the total cart counter value ie. #car_counter is id
              
         if(response.status =='Failed'){
           swal(response.message)
-        }else{
-          console.log('product item '+product_item)          
+        }
+        else{
+     
+  
           $('#cart-counter').html(response.cart_counter['cart_count']);
           swal(response.status,response.message,'success')
           apply_cart_amounts(
             response.cart_amount['subtotal'],
-            response.cart_amount['tax'],
+            response.cart_amount['tax_dict'],
             response.cart_amount['grand_total'],
-            )          
+            )      
+          console.log('cart amount',+response.cart_amount['tax'])      
           removeCartItem(0,cart_id);
           check_Cart_empty();
+
         } ;
       }
     })
   })  
+  
   $('.add-hour').on('click',function(e){
     e.preventDefault();
     var day = document.getElementById('id_day').value
@@ -185,7 +193,7 @@ $(document).ready(function(){
       swal('Failed','Please fill the fields required', 'info')
     }
   })
-// ========================================================
+
   $(document).on('click','.remove_item', function(e){
     e.preventDefault();
     url= $(this).attr('data-url');
@@ -203,8 +211,7 @@ $(document).ready(function(){
     })
 
   });
-  // ========================================================
-  // test area
+
   $(document).on('click','.testarea-remove', function(e){
     e.preventDefault();
     url= $(this).attr('data-url');
@@ -222,8 +229,7 @@ $(document).ready(function(){
     })
 
   });
-  // ========================================================
-  // delete the cart elment if the quanitty is 0
+
   function removeCartItem(cartItemQty, cart_id){
       if (cartItemQty <= 0 ){
         document.getElementById("cart-item-"+cart_id).remove()
@@ -241,36 +247,40 @@ $(document).ready(function(){
     }
   }
 
-  function  apply_cart_amounts(subtotal,tax,granndtotal){
+  function  apply_cart_amounts(subtotal,tax_dict,granndtotal){
     if (window.location.pathname =='/cart/'){
       $('#subtotal').html(subtotal);
-      $('#tax').html(tax);
-      $('#total').html(granndtotal);
+       $('#total').html(granndtotal);
+      console.log('tax_dict :', tax_dict)
+
+      for (key1 in tax_dict){
+        console.log('value of ',key1, tax_dict[key1])
+
+        for(key2 in tax_dict[key1]){
+          console.log('value amount ',tax_dict[key1][key2])
+          $('#tax-'+key1).html(tax_dict[key1][key2]);
+          
+        }
+      }
     }
   }
  
-});
+  let autocomplete;
+  function initAutoComplete(){
+  autocomplete = new google.maps.places.Autocomplete(
+      document.getElementById('id_address'),
+      {
+          types: ['geocode', 'establishment'],
+          //default in this app is "IN" - add your country code
+          componentRestrictions: {'country': ['ph']},
+      }
+  
+      )
+  // function to specify what should happen when the prediction is clicked
+  autocomplete.addListener('place_changed', onPlaceChanged);
+  }
 
-// ========================================================// ========================================================
-
-let autocomplete;
-
-function initAutoComplete(){
-autocomplete = new google.maps.places.Autocomplete(
-
-    document.getElementById('id_address'),
-    {
-        types: ['geocode', 'establishment'],
-        //default in this app is "IN" - add your country code
-        componentRestrictions: {'country': ['ph']},
-    }
-    
-    )
-// function to specify what should happen when the prediction is clicked
-autocomplete.addListener('place_changed', onPlaceChanged);
-}
-
-function onPlaceChanged (){
+  function onPlaceChanged (){
     var place = autocomplete.getPlace();
 
     // User did not select the prediction. Reset the input field or alert()
@@ -331,3 +341,8 @@ function onPlaceChanged (){
 
 
 }
+
+});
+
+
+

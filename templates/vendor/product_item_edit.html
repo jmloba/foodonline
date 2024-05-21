@@ -92,8 +92,6 @@
 														</div>
 												</div>	        
 
-  
-  
                       </div>
 											<!-- display error -->
 											{% include 'include/form_display_error.html'%}
@@ -101,7 +99,8 @@
 
 											<button class='btn btn-info'  type="submit"><i class="fa-solid fa-check"></i>Modify (Save)</button>											
 
-												<a href="{% url 'product_item_delete' product.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Product?')" ><i class="fa-solid fa-trash " aria-hidden="true"></i>&nbsp;Delete</a>	
+												<a href="{% url 'product_item_delete' product.id %}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this Product?')" >
+													<i class="fa-solid fa-trash " aria-hidden="true"></i>&nbsp;Delete</a>	
 
 
 

@@ -45,7 +45,7 @@ def registerVendor(request):
     
     form = UserForm(request.POST)
     v_form = VendorRegistrationForm(request.POST,request.FILES)
-    if form.is_valid()  and v_form.is_valid() :
+    if _valid()  and v_form.is_valid() :
 
       mess = f' **joven** form is valid: form:{form.is_valid()}, v_form : { v_form.is_valid()} '
       print_message(mess)
@@ -221,6 +221,7 @@ def activate(request, uidb64, token):
   try: 
     uid =  urlsafe_base64_decode(uidb64).decode()
     user =User._default_manager.get(pk=uid)
+    
   except(TypeError,ValueError,OverflowError,User.DoesNotExist):
     user=None
 
@@ -235,8 +236,7 @@ def activate(request, uidb64, token):
     return redirect('myAccount')
 
 
-def reset_Password_validate(request, uidb64, token):
-  pass
+
 
 
 

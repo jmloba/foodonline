@@ -4,7 +4,7 @@
 
 {% block content %}
 			<!-- Main Section Start -->
-			<div class="main-section pt-5">
+			<div class="marketplace-cart pt-5">
 
 
 				<div class="page-section">
@@ -94,13 +94,13 @@
 							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 								<div class="tabs-holder horizontal">
 									<ul class="stickynav-tabs nav nav-tabs">
-										<li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>your Order</a></li>
+										<li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Your Order</a></li>
 										
 									</ul>
 									<div class="tab-content">
 										<div id="home" class="tab-pane in active">
 											<div class="menu-itam-holder">
-                        <div>
+                        <div class="menu-item-holder-div">
                           <ul>
                             <!-- subtotal -->
                             <li style="list-style-type: None;">
@@ -112,13 +112,17 @@
                             </li>
 
                             <!-- tax -->
-                            <li style="list-style-type: None;">
-                              Tax
-                              <span class="price float-right">
-                                <span class="currency" >$</span>
-                                <span id="tax">{{tax}}</span>
-                              </span>
-                            </li>
+                            {% for key, value in tax_dict.items %}
+                              {% for  percentage,  tax_amount in value.items%}
+                                <li class="tax-line" style="list-style-type: None;">
+                                  {{key}} <small>({{percentage}}%)</small>
+                                  <span class="price float-right">
+                                  <span class="currency" >$</span>
+                                  <span id="tax-{{key}}">{{tax_amount}}</span>
+                                  </span>
+                                </li>
+                              {% endfor %}
+                            {% endfor %}
 
                             <!-- grand total -->
                             <li style="list-style-type: None;">
@@ -140,5 +144,10 @@
 				</div>
 			</div>
 			<!-- Main Section End -->
+
+
+      <link rel="stylesheet" href="{% static 'css/custom-cart.css' %}">
+
+      <script src="{% static 'js/custom.js' %}" ></script> 
 
 {% endblock  %}

@@ -185,6 +185,7 @@ def product_item_edit(request,pk=None):
 
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
+
 def product_item_delete(request,pk=None):
   product = get_object_or_404(Product_Menu,pk=pk)
   product.delete()
@@ -210,6 +211,7 @@ def add_opening_hours(request):
         day = request.POST.get('day')
         from_hour= request.POST.get('from_hour')
         to_hour= request.POST.get('to_hour')
+        
         is_closed= request.POST.get('is_closed')
         print(f"------->>>>  inside views -->>variables are day : {day}, from hour : {from_hour}, to hour : {to_hour}, is_closed : {is_closed} <<<<<-----\n")
         try:

@@ -11,5 +11,4 @@ urlpatterns = [
 
   path('orm_product_all/', views.product_all, name = "product_all"),
 
-  path('orm_polymorphic/', views.polymorphic, name = "polymorphic"),
 ]
