@@ -1,0 +1,211 @@
+{% extends 'main_project/base.html'%}
+
+{% load static %}
+
+{% block content %}
+			<!-- Main Section Start -->
+			<div class="marketplace-cart pt-5">
+
+
+				<div class="page-section">
+					<div class="container">
+						<div class="row">
+              <!-- Section cart -->
+							<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+								<div class="tabs-holder horizontal">
+									<ul class="stickynav-tabs nav nav-tabs">
+										<li class="active"><a data-toggle="tab" href="#home"><i class="fa fa-shopping-cart text-danger" ></i></i>Billing Address</a></li>
+										
+									</ul>
+									<div class="tab-content">
+										<div id="home" class="tab-pane in active">
+											<div class="menu-itam-holder">
+             
+												<div id="menu-item-list-6272" class="menu-itam-list">
+													<form action="{% url 'app_orders:place-order' %}" method = 'POST'>
+														{% csrf_token%}
+
+														<div class="row">
+															<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+																First Name : {{form.first_name}}
+															</div>
+															<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+																last Name : {{form.last_name}}
+															</div>
+														</div>
+														<div class="row">
+															<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+																Phone : {{form.phone}}
+															</div>
+															<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+																Email : {{form.email}}
+															</div>
+														</div>					
+														<div class="row">
+															<div class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12">
+																Address : {{form.address}}
+															</div>
+														</div>			
+														<div class="row">
+															<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+																Country : {{form.country}}
+															</div>
+															<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+																State : {{form.state}}
+															</div>
+
+														</div>																			
+
+														<div class="row">
+															<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+																City : {{form.city}}
+															</div>
+															<div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+																Pin Code : {{form.pin_code}}
+															</div>
+
+														</div>		
+														
+
+													
+
+												</div>
+
+      
+											</div>
+										</div>
+										
+									</div>
+								</div>
+							</div>
+              <!-- Section Order -->
+							<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+								<div class="tabs-holder horizontal">
+									<ul class="stickynav-tabs nav nav-tabs">
+										<li class="active"><a data-toggle="tab" href="#home"><i class="icon- icon-room_service"></i>Your Order</a></li>
+										
+									</ul>
+									<div class="tab-content">
+										<div id="home" class="tab-pane in active">
+											<div class="menu-itam-holder">
+												<hr>
+												<div id="menu-item-list-6272" class="menu-itam-list">
+													<ul>
+                            
+                              {% for item in cart_items %}
+                              <li id="cart-item-{{item.id}}">
+                                <div class="image-holder"> <img src="{{ item.product_item.image.url }}" alt=""></div>
+                                <div class="text-holder">
+                                  <h6>{{ item.product_item }}</h6>
+                                  <span>{{item.product_item.description}}</span>
+                                  
+                                   <p class="badge bardge-warning">{{item.product_item.vendor.vendor_name}}</p>
+                                </div>
+																<div class="quantity" style="display:inline-block;position:absolute; top:33%; left : 50%; transform : translateY(50%); margin-top:-20px; ">
+																	<span>Quantity : {{item.quantity}}</span>	
+																	
+																</div>
+                                <div class="price-holder">
+                                  <span class="price">Price : Php{{item.product_item.price}}</span>
+                                </div>
+                              </li>
+                              {% endfor %}
+                          
+			
+													</ul>
+												</div>	
+												<hr>										
+                        <div class="menu-item-holder-div">
+                          <ul>
+                            <!-- subtotal -->
+                            <li style="list-style-type: None;">
+                              Subtotal
+                              <span class="price float-right">
+                                <span class="currency" >$</span>
+                                <span id="subtotal">{{subtotal}}</span>
+                              </span>
+                            </li>
+
+                            <!-- tax -->
+                            {% for key, value in tax_dict.items %}
+                              {% for  percentage,  tax_amount in value.items%}
+                                <li class="tax-line" style="list-style-type: None;">
+                                  {{key}} <small>({{percentage}}%)</small>
+                                  <span class="price float-right">
+                                  <span class="currency" >$</span>
+                                  <span id="tax-{{key}}">{{tax_amount}}</span>
+                                  </span>
+                                </li>
+                              {% endfor %}
+                            {% endfor %}
+
+                            <!-- grand total -->
+                            <li style="list-style-type: None;">
+                              TOTAL
+                              <span class="price float-right">
+                                <span class="currency" >$</span>
+                                <span id="total">{{grand_total}}</span>
+                              </span>
+                            </li>
+														<h5 class ='text-capitalize' style="margin-top: 1em">Select Payment Method </h5>
+														<!-- select payment method 	 -->
+														 <div class="payment-method" style="display:inline-flex">
+																<label >
+																	<input type="radio" name="payment_method" value="PayPal">
+																	<img src="{% static 'logo/paypal_logo.png'%}" alt="paypal"  width="100">
+		
+																</label>
+																<label >
+																	<input type="radio" name="payment_method" value="Gcash">
+																	<img src="{% static 'logo/gcash_logo.jpg' %}" alt="gcashpay" width="100">
+
+																</label>
+
+														 </div>
+														<span class="text-danger " id="payment-method-error"></span> 
+                            <button onclick="return payMethodConfirm();" type="submit"  class="btn btn-danger w-100 p-2 mt-3" >Place Order</button>
+
+														
+													</form>
+
+                          </ul>
+                        </div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>							
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- Main Section End -->
+
+
+      <link rel="stylesheet" href="{% static 'css/custom-cart.css' %}">
+
+      <script src="{% static 'js/custom.js' %}" ></script> 
+			<script>
+				function payMethodConfirm(){
+					var paymethod = $("input[name='payment_method']:checked").val()
+					if (!paymethod){
+						$('#payment-method-error').html('Please Select payment method')
+						swal('Payment Method is required','Please select a payment method','error')
+						return false;
+					} else {
+						var conf= confirm("You have selected "+paymethod+ ' as preferred payment method,\nClick ok to continue ')
+						if (conf==true){
+							return true
+						}
+						else{
+							return false
+						}
+					}
+				}
+				$('input[name=payment_method]').on('change',function(){
+					$('#payment-method-error').html('')
+				})
+
+			</script>
+
+{% endblock  %}

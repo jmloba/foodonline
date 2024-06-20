@@ -17,8 +17,8 @@ class CategoryAdmin(admin.ModelAdmin):
 class Product_MenuAdmin(admin.ModelAdmin)  :             
   prepopulated_fields={'slug':('product_title',)}  
   list_display=['id','vendor','category','product_itemno','product_title','slug','description','price','is_available']
-  list_editable =('is_available',)
-  ordering=('product_title',)
+  list_editable =('is_available','price')
+  ordering=('-price','product_title',)
   search_fields=('product_title','description','category__category_name')
   filter_horizontal =()
   list_filter =()

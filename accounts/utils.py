@@ -42,8 +42,15 @@ def send_verification_email(request,user,mail_subject,email_template):
 def send_notification(mail_subject, mail_template, context):
   from_email = settings.DEFAULT_FROM_EMAIL
   message =render_to_string(mail_template,     context )
-  to_email = context['user'].email
-  mail = EmailMessage(mail_subject,message, to=[to_email])
+
+  if (isinstance(context['to_email'],str)):
+    to_email=[]
+    to_email.append(context['to_email'])
+  else:  
+    to_email = context['to_email']
+
+
+  mail = EmailMessage(mail_subject,message, to=to_email)
   mail.send()
 
   return
@@ -52,4 +59,13 @@ def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
+
+def reformat_date(val):
+  print(f'reformatting val: {val}')
+  #  abbreviated month %b
+  #  abbreviated full month %B
+  # val = val.strftime("%B %d, %Y, %H:%M ")
+  # val = val.strftime("%B %d, %Y, %I:%M %p")
+  val = val.strftime("%Y/%m/%d, %I:%M %p")
+  return val
 

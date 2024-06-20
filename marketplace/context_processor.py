@@ -2,7 +2,7 @@ from .models import Cart, Tax
 from menu.models import Product_Menu
 
 def get_cart_counter(request):
-  print(f'context processor : get_cart_counter ')
+  # print(f'context processor : get_cart_counter ')
   cart_count=0
   if request.user.is_authenticated:
     try:
@@ -19,7 +19,7 @@ def get_cart_counter(request):
   return dict(cart_count=cart_count)
 
 def get_cart_amount(request):
-  print(f'context processor :  get_cart_amount ')  
+  # print(f'context processor :  get_cart_amount ')  
   subtotal = 0
   tax =0
   grand_total =0
@@ -31,12 +31,12 @@ def get_cart_amount(request):
       subtotal += (product_item.price * item.quantity)
 
     get_tax = Tax.objects.filter(is_active = True)
-    print(f'get tax , {get_tax}')
+    # print(f'get tax , {get_tax}')
     for i in get_tax:
       tax_type = i.tax_type
       tax_percentage = i.tax_percentage
       tax_amount = round((tax_percentage * subtotal)/100,2)
-      print(f'***-->>>tax_type :{tax_type}, tax_percentag:{tax_percentage},tax_amount : {tax_amount} ')
+      print(f'marketplace->context_processor***-->>>tax_type :{tax_type}, tax_percentag:{tax_percentage},tax_amount : {tax_amount} ')
       '''
           note :   we need a dictionary as :
           re : Taxes are  SalesTax, VAT
@@ -54,9 +54,9 @@ def get_cart_amount(request):
     
     grand_total = subtotal + tax 
 
-    print(f'tax dictionary : {tax_dict}')
-    print(f'tax  : {tax}')
-    print (f'printed from context processor called when adding and subtracting quantity')
+    # print(f'tax dictionary : {tax_dict}')
+    # print(f'tax  : {tax}')
+    # print (f'printed from context processor called when adding and subtracting quantity')
 
-    print(f' subtotal : {subtotal}, grand total :{grand_total}')
+    # print(f' subtotal : {subtotal}, grand total :{grand_total}')
   return dict(subtotal=subtotal,tax=tax,grand_total=grand_total, tax_dict=tax_dict)

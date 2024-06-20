@@ -31,9 +31,35 @@
   margin : 5px;
   font-size: 12px;
   cursor :pointer;
-  
   }
+
+.text-capitalize{
+  text-transform: uppercase ;
+}  
+
+/* hide radio button */
+.payment-method [type=radio]{
+  position : absolute;
+  opacity: 0;
+  width:0;
+  height : 0;
   
+}
+/* payment selection pointer */
+.payment-method [type=radio]+img{
+  cursor : pointer;
+
+}
+.payment-method [type=radio]:checked+img{
+  outline: 2px solid #A94438;
+
+}
+.payment-method label{
+  margin :.4em;
+}
+
+
+
  select, 
  .main-search.fancy .field-holder input[type="text"] {
   color: blue !important; 

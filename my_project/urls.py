@@ -32,14 +32,20 @@ urlpatterns = [
 
     path('', include('accounts.urls')),
     path('marketplace/',include('marketplace.urls')),
-
-      # cart page
+    path('vendor/',include('vendor.urls')),
+    path('app_customers/',include('app_customers.urls')),
+    path('app_orders/',include('app_orders.urls')),
+    # cart page
     path('cart/', martketplaceViews.cart, name ='cart'),
     #search
     path('search/', martketplaceViews.search, name ='search'),
+    #CHECKOUT
+    path('checkout/', martketplaceViews.checkout, name ='checkout'),
+
     path('orm_module/', include('orm_module.urls')),
     path('__debug__/',include(debug_toolbar.urls)),
     path('testarea/', include('testarea.urls')),    
+
 
 
 ] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

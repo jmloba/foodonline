@@ -20,7 +20,7 @@ class CustomerUserAdmin(UserAdmin):
   fieldsets=()
 
 class  UerProfileAdmin(admin.ModelAdmin):
-  list_display= ['id','user','country','latitude','longitude','location']
+  list_display= ['id','user','city','country','latitude','longitude','location']
   filter_horizontal =()
   list_filter =()
   fieldsets=()

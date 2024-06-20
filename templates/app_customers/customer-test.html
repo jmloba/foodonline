@@ -1,0 +1,39 @@
+{% extends 'main_project/base.html'%}
+
+{% load static %}
+{% block content%}
+
+<h3>welcome {{user.username}}</h3>
+{% include 'include/alerts.html' %}
+
+<p>{{user.get_role}}</p>
+
+		<!-- Main Section Start -->
+		<div class="main-section">
+			{% include 'app_customers/app-customer-cover.html'%}
+
+			<div class="page-section account-header buyer-logged-in">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <!-- load sidebar -->
+              {% include 'include/sidebar_cust.html' %}
+						</div>
+						<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+							<div class="user-dashboard loader-holder">
+								<div class="user-holder">
+									
+
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Main Section End -->
+
+
+{% endblock %}
+

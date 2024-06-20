@@ -1,20 +1,54 @@
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from .context_processor import get_cart_counter,get_cart_amount
-from vendor.models import Vendor,OpeningHour
-from menu.models import Category,Product_Menu
-from vendor.views import get_vendor
-from django.db.models import Prefetch
-from django.contrib.auth.decorators import login_required, user_passes_test
-from marketplace.models import Cart
 from django.db.models import Q
 
+from vendor.models import Vendor,OpeningHour
+from menu.models import Category,Product_Menu
+from marketplace.models import Cart
+from accounts.models import UserProfile
+
+from app_orders.forms  import OrderForm
+
+from vendor.views import get_vendor
+
+from django.db.models import Prefetch
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.measure import D  # 'D' is a shortcut for Distance
 from django.contrib.gis.db.models.functions import Distance
 from datetime import time, datetime, date
 
 
+@login_required(login_url='login')   
+def checkout(request):
+
+  cart_items = Cart.objects.filter(user = request.user).order_by('created_at')
+  cart_count=cart_items.count()
+  if cart_count <=0 :
+    return redirect('marketplace:marketplace')
+  
+  user_profile = UserProfile.objects.get(user=request.user)
+  default_values = {
+    'first_name': request.user.first_name,
+    'last_name': request.user.last_name,
+    'email': request.user.email,
+    'phone': request.user.phone_number,
+
+    'address': user_profile.address,
+    'city':user_profile.city,
+    'state': user_profile.state,
+    'pin_code' :user_profile.zip_code,
+    'country':user_profile.country
+  }
+
+  print(f' default values are : **** {default_values}')
+  print(f'user from request : {request.user}')
+
+  form = OrderForm(initial=default_values)
+  
+  context={'form':form, 'cart_items':cart_items,"cart_count":cart_count}
+  return render(request,'marketplace/checkout.html', context)
 
 # Create your views here.
 
@@ -130,7 +164,6 @@ def cart(request):
   context ={"cart_items":cart_items}
   return render(request,'marketplace/cart.html',context)
 
-
 def delete_cart(request,cart_id):
     if request.user.is_authenticated:
       if  is_ajax(request=request):
@@ -156,13 +189,12 @@ def search(request):
   if not 'address' in request.GET:
     return redirect('marketplace')
   else:
-
     address = request.GET['address']
     latitude =request.GET['lat']
     longitude =request.GET['lng']
     radius = request.GET['radius']
     keyword = request.GET['keyword']
-    
+ 
     print( f' address : {address}\n latitude : {latitude}\n longitude : {longitude}\n radius : {radius}\n search product or name : {keyword}')
     # geet bendor id that has food item the user is looking for 
     fetch_vendor_by_product_item = Product_Menu.objects.filter(
@@ -188,3 +220,4 @@ def search(request):
     print(f'search for vendors : {vendors}')
     context={'vendors':vendors, 'vendor_count':vendor_count,  'source_location':address         }
     return render(request,'marketplace/listings.html', context)
+ 

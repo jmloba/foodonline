@@ -1,0 +1,16 @@
+
+{% autoescape off %}
+
+ Hi {{user}}.
+
+We are confirming your orders and payment
+
+Order Number : {{order.order_number}}
+Payment method : {{order.payment_method}}
+
+Transaction id : {{order.payment.transaction_id}}
+Total Amount : {{order.total}}
+
+
+
+{% endautoescape  %}

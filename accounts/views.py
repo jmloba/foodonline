@@ -45,7 +45,7 @@ def registerVendor(request):
     
     form = UserForm(request.POST)
     v_form = VendorRegistrationForm(request.POST,request.FILES)
-    if _valid()  and v_form.is_valid() :
+    if form.is_valid()  and v_form.is_valid() :
 
       mess = f' **joven** form is valid: form:{form.is_valid()}, v_form : { v_form.is_valid()} '
       print_message(mess)
@@ -196,10 +196,16 @@ def myAccount(request):
   redirectUrl= detectUser(user)
   return redirect(redirectUrl)
 
+
 @login_required(login_url='login')
 @user_passes_test(check_role_customer)
 def dashboardCustomer(request):
-  return render(request,'accounts/dashboardCustomer.html')
+  print(f'\n\ncustomer dashboard   ***: {request.user}\n')
+
+  context={}
+  return render(request,'accounts/dashboardCustomer.html', context)
+
+
 
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)

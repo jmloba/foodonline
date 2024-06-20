@@ -47,7 +47,7 @@
                 </a>
                 {% endif %}
 
-                <a class="btn btn-outline-danger text-uppercase font-weight-bold"  data-toggle="modal" href="{% url 'marketplace' %}">Marketplace</a>                
+                <a class="btn btn-outline-danger text-uppercase font-weight-bold"  data-toggle="modal" href="{% url 'marketplace:marketplace' %}">Marketplace</a>                
 
                 {% if user.is_authenticated %}
                 <a class="cs-color cs-popup-joinus-btn login-popup"  data-toggle="modal" href="{% url 'myAccount' %}">My Account</a>                

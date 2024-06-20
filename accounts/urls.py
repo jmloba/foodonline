@@ -12,6 +12,8 @@ urlpatterns = [
   path('myAccount/', views.myAccount, name='myAccount')  , 
 
   path('dashboardCustomer/', views.dashboardCustomer, name='dashboardCustomer')  ,  
+
+  
   path('dashboardVendor/'  , views.dashboardVendor  , name='dashboardVendor')  ,  
  
   path('dashboardAdmin/'   , views.dashboardAdmin   , name='dashboardAdmin')  ,  

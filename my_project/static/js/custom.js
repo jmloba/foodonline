@@ -4,6 +4,8 @@ $(document).ready(function(){
 
   $('.add_to_cart').on('click',function(e){
     e.preventDefault();
+    e.stopImmediatePropagation();
+    console.log('**** add to cart')
     
     product_item  = $(this).attr('data-id');
     url = $(this).attr('data-url');
@@ -43,6 +45,7 @@ $(document).ready(function(){
 
   $('.decrease_cart').on('click',function(e){
     e.preventDefault();
+    e.stopImmediatePropagation();
     product_item  = $(this).attr('data-id');
     url = $(this).attr('data-url');
     cart_id  = $(this).attr('id');

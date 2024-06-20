@@ -111,9 +111,9 @@
 									<li class="has-border">
 										<figure>
 											{% if vendor.user_profile.profile_picture %}
-											<a href="{% url 'vendor_detail' vendor.vendor_slug %}"><img src="{{vendor.user_profile.profile_picture.url}}" class="attachment-full size-full wp-post-image" alt=""></a>
+											<a href="{% url 'marketplace:vendor_detail' vendor.vendor_slug %}"><img src="{{vendor.user_profile.profile_picture.url}}" class="attachment-full size-full wp-post-image" alt=""></a>
 											{% else %}
-											<a href="{% url 'vendor_detail' vendor.vendor_slug %}"><img src="{% static 'images/profile_picture.png' %}" class="attachment-full size-full wp-post-image" alt=""></a>
+											<a href="{% url 'marketplace:vendor_detail' vendor.vendor_slug %}"><img src="{% static 'images/profile_picture.png' %}" class="attachment-full size-full wp-post-image" alt=""></a>
 											{% endif %}
 										</figure>
 									</li>
@@ -147,7 +147,7 @@
 												<figure>
 													<!-- <a href="#"><img src="assets/extra-images/listing-logo18.png" class="img-thumb wp-post-image" alt=""></a> -->
 													{% if vendor.user_profile.profile_picture %}
-													<a href="{% url 'vendor_detail' vendor.vendor_slug %}"><img src="{{vendor.user_profile.profile_picture.url}}"class="img-thumb wp-post-image" alt=""></a>
+													<a href="{% url 'marketplace:vendor_detail' vendor.vendor_slug %}"><img src="{{vendor.user_profile.profile_picture.url}}"class="img-thumb wp-post-image" alt=""></a>
 													{% else %}
 													<a href="{% url 'vendor_detail' vendor.vendor_slug %}"><img src="{% static 'images/profile_picture.png' %}" class="img-thumb wp-post-image" alt=""></a>
 													{% endif %}	
@@ -172,7 +172,7 @@
 											
 												<div class="post-title">
 													<h5>
-														<a href="{% url 'vendor_detail' vendor.vendor_slug %}">{{vendor}}</a>
+														<a href="{% url 'marketplace:vendor_detail' vendor.vendor_slug %}">{{vendor}}</a>
 
 													</h5>
 												</div>

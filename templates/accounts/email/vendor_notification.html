@@ -1,0 +1,19 @@
+
+{% autoescape off %}
+
+ Hi {{vendor}}.
+
+
+*** vendor notification of order ***
+ 
+There is an order for you :
+
+
+Order Number : {{order.order_number}}
+
+Transaction id : {{order.payment.transaction_id}}
+
+
+
+
+{% endautoescape  %}

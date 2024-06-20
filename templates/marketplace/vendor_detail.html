@@ -146,7 +146,7 @@
 
 																<a href="#" class="decrease_cart" 
 																data-id="{{product.id}}" 
-																data-url="{% url 'decrease_cart' product.id %}"
+																data-url="{% url 'marketplace:decrease_cart' product.id %}"
 
 																style="margin-right:28px;" >
 																
@@ -163,7 +163,7 @@
 																<!-- <h4>product item = {{product.id}}</h4>  -->
 																<a href="#" class="add_to_cart" 
 																data-id="{{product.id}}" 
-																data-url="{% url 'add_to_cart' product.id %}">
+																data-url="{% url 'marketplace:add_to_cart' product.id %}">
 
 																	<i class="icon-plus4 text-color"  ></i>
 																</a>

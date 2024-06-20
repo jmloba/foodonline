@@ -53,10 +53,15 @@ INSTALLED_APPS = [
     
     'accounts',
     'vendor',
+    'app_customers',
+    'app_orders',
     'menu',
     'marketplace',
     'orm_module',
     'testarea',
+    "crispy_forms",
+    "crispy_bootstrap5",
+
 ]
 
 MIDDLEWARE = [
@@ -89,6 +94,9 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'accounts.context_processors.get_vendor',
                 'accounts.context_processors.get_google_api',
+                'accounts.context_processors.get_user_profile',
+                'accounts.context_processors.get_paypal_client_id',
+                
 
                 'marketplace.context_processor.get_cart_counter',
                 'marketplace.context_processor.get_cart_amount',
@@ -151,6 +159,10 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+# crispy
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
 
 
 # Static files (CSS, JavaScript, Images)
@@ -169,7 +181,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # MEDIA FILES CONFIG
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR /'media'
+MEDIA_ROOT =  os.path.join(BASE_DIR,'media')
 
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
@@ -188,6 +200,12 @@ DEFAULT_FROM_EMAIL=config('DEFAULT_FROM_EMAIL')
 
 # EMAIL_BACKEND = config('EMAIL_BACKEND')
 GOOGLE_API_KEY=config('GOOGLE_API_KEY')
+
+#paypal
+PAYPAL_PERSONAL_APP_NAME = config('PAYPAL_PERSONAL_APP_NAME') 
+PAYPAL_PERSONAL_CLIENT_ID = config('PAYPAL_PERSONAL_CLIENT_ID') 
+PAYPAL_PERSONAL_SECRETKEY_1 = config('PAYPAL_PERSONAL_SECRETKEY_1') 
+SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'
 
 INTERNAL_IPS=[
   '127.0.0.1',
