@@ -28,7 +28,7 @@ class Order(models.Model):
   )
   user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
   payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null = True, blank = True)
-  order_number = models.CharField(max_length=20)
+  order_number = models.CharField(max_length=30)
 
   
   # coming from billing address

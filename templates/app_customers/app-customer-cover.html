@@ -25,10 +25,14 @@
               <span class="restaurant-title">customer : {{request.user.username}}</span>
               <div class="text">
 
-                <p>User : {{request.user.username}}  {{request.user.username}}</p>
+                <p>Name : {{request.user.first_name}} {{request.user.last_name}}</p>
+                
                 <hr>
-                <i class="icon-location"></i>
-                <p>my tel 0944-44-44</p>
+                <i class="icon-Phone"></i>
+                <p>{{request.user.phone_number}}</p>
+                <i class="icon-envelope"></i>
+                <p>{{request.user.email}}</p>
+
               </div>
             </div>
           </div>

@@ -149,7 +149,7 @@ def save_to_payment(request):
     # send_to_email(request, cart_items, order)
 
     #clear cart
-    cart_items.delete()
+    # cart_items.delete()
     response={'status':'Success',
               'order_status':'Order has been accepted',
               'order_number': order_number,

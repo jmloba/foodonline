@@ -16,7 +16,9 @@ from .models import User, UserProfile
 from accounts.models import UserProfile
 from django.template.defaultfilters import slugify
 
+
 from .error_printscr import print_message
+from app_orders.models import Order
 
 '''
 restrict the vendor from accessing customer page
@@ -196,17 +198,6 @@ def myAccount(request):
   redirectUrl= detectUser(user)
   return redirect(redirectUrl)
 
-
-@login_required(login_url='login')
-@user_passes_test(check_role_customer)
-def dashboardCustomer(request):
-  print(f'\n\ncustomer dashboard   ***: {request.user}\n')
-
-  context={}
-  return render(request,'accounts/dashboardCustomer.html', context)
-
-
-
 @login_required(login_url='login')
 @user_passes_test(check_role_vendor)
 def dashboardVendor(request):
@@ -240,11 +231,6 @@ def activate(request, uidb64, token):
   else:
     messages.error(request,'Invalid activation link')
     return redirect('myAccount')
-
-
-
-
-
 
 ''' password section'''
 def forgot_Password(request):
@@ -311,7 +297,21 @@ def reset_Password(request):
     #   return redirect('myAccount')
   return render(request,('accounts/reset_Password.html'))
 
+''' customer dashboard'''
 
-
+@login_required(login_url='login')
+@user_passes_test(check_role_customer)
+def dashboardCustomer(request):
+  orders = Order.objects.filter(user=request.user, is_ordered=True)
+  recent_orders = orders [:5]
+  total_orders = orders.count()
+  
+  orders_count = orders.count()
+  context={'orders':orders,
+           'orders_count':orders_count,
+           'recent_orders': recent_orders,
+           'total_orders':total_orders,
+           }
+  return render(request,'accounts/dashboardCustomer.html', context)
 
 

@@ -6,8 +6,12 @@
       <li  class="{% if '/app_customers/' == request.path or '/app_customers/' == request.path %}
       active {% endif %}"><a href="{% url 'app_customers:customer' %}"><i class="icon-dashboard3"></i>Dashboard</a></li>
 
+      <li  class="{%  if '/my_orders/' in request.path or  '/order-details/' in request.path %} active {%endif%}"><a href="{% url 'app_customers:my-orders'%}"><i class="fa-solid fa-arrow-down-short-wide"></i></i>My Orders</a></li>
+
+
   
       <li class="{%  if 'cprofile' in request.path %} active {%endif%}"><a class="logout-btn" href="{% url 'app_customers:cprofile' %}"><i class="icon-log-out"></i>Profile</a></li>
+      <li><a class="logout-btn" href="{% url 'logout' %}"><i class="icon-log-out"></i>Signout</a></li>      
     </ul>
   </div>
 </div>

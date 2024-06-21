@@ -9,5 +9,7 @@ urlpatterns = [
 
   path('', AccountViews.dashboardCustomer, name='customer' ),  
   path('cprofile/', views.cprofile, name='cprofile' ),  
+  path('my_orders/', views.my_orders, name='my-orders' ),  
+  path('order-details/<str:order_number>', views.order_details, name='order-details' ),  
 
 ]

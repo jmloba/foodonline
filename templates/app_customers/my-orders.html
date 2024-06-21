@@ -6,6 +6,7 @@
 
 {% include 'include/alerts.html' %}
 
+
 		<!-- Main Section Start -->
 		<div class="main-section">
 			{% include 'app_customers/app-customer-cover.html'%}
@@ -24,42 +25,12 @@
 								<div class="user-holder">
 									
 									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-
-										<div class="row">
-											<!-- overview total orders-->
-												<div class="mb-3 col-lg-4 col-md-4 col-sm-12 col-xs-12">
-													<div class="card">
-														<div class="card-header">
-															total Orders
-														</div>
-														<div class="card-body text-center">
-															<b style="color:blue">{{total_orders}}</b>
-		
-														</div>
-													</div>
-												</div>	
-											<!-- overview REvenue -->
-		
-												<div class="mb-5 col-lg-8 col-md-8 col-sm-12 col-xs-12">
-													<div class="card">
-														<div class="card-header">
-															Logged-in  as <b> {{user.email}} </b>
-														</div>
-														<div class="card-body text-center">
-															<a href="{% url 'app_customers:cprofile' %}"> 
-																<h5  class="card-title" ><i class="fa fa-edit" style="color :rgb(233, 24, 24);"></i> Edit Profile</h5>
-															</a>
-		
-														</div>
-													</div>
-												</div>	
-											<!-- overview month REvenue -->
-										</div>															
+														
 									</div>
 									<br>
 									<div class="row">
 										<div class="element-title has-border right-filters-row">
-											<h5 class="text-uppercase">Overview </h5>
+											<h5 class="text-uppercase">My Orders </h5>
 										</div>
 									</div>
 
@@ -83,18 +54,15 @@
 																</tr>
 															</thead>
 															<tbody>
-																{% for item in recent_orders %}
+																{% for item in orders %}
 																<tr>
-																	<td>{{item.order_number}}</td>
+																	<td><b><a class = "text-dark" href="{% url 'app_customers:order-details' item.order_number %} ">{{item.order_number}}</a></b></td>
 																	<td>{{item.created_at}}</td>
 																	<td>{{item.name}}</td>
 
 																	<td>Php.{{item.total}}</td>
 																	<td>{{item.is_ordered}}</td>
-																	<td>
-																		<a href="#" class="btn btn-success"
-																		 >details ss</a>
-																	</td>
+																	<td><a href="{% url 'app_customers:order-details' item.order_number %} " class="btn btn-success" >View Order</a></td>
 																</tr>
 																{% endfor %}
 																
@@ -116,7 +84,6 @@
 			</div>
 		</div>
 		<!-- Main Section End -->
-		<script src="{% static 'js/app_customer_dashboard.js' %}" ></script> 
 
 
 {% endblock %}
