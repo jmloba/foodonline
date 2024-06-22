@@ -1,0 +1,172 @@
+{% extends 'main_project/base.html'%}
+
+{% load static %}
+{% block content%}
+{% include 'include/alerts.html' %}
+		<!-- Main Section Start -->
+		<div class="main-section">
+			{% include 'include/cover.html'%}
+
+	
+
+			<div class="page-section account-header buyer-logged-in">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <!-- load sidebar -->
+              {% include 'include/sidebar_vend.html' %}
+						</div>
+						<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+							<div class="user-dashboard loader-holder">
+								<div class="user-holder">
+                  <div class="container">
+                    <div class="justify-content-center row">
+                      <div class="col-md-12">
+                        <div class="bg-white p-1 d-flex">
+                          <img src="{% static 'logo/logo_red.png' %}" alt="my logo" height="80" >
+                          <div class="row">
+                            <div class="col-md-6">
+                              <h4 class="mt-4 mb-3">Thank you for your order</h4>
+                            </div>
+                            <div class="col-md-6 text-right">
+                              <p class="mb-0">{{order.name}}</p>
+                              <p class="mb-0">{{order.address}}</p>
+                              <p class="mb-0">{{order.phone}}</p>
+                              <p class="mb-0">{{order.email}}</p>
+                            </div>
+                  
+                  
+                          </div>
+                          
+                  
+                  
+                        </div>
+                        <div class="order-table">
+                          <div class="menu-itam-holder">
+                            <p>Hello <span><b>{{order.name}}</b>,</span></p>
+                            <p>Kindly review your order</p>
+                            <br>
+                            <div class="order-info d-flex ">
+                              <div class="order-info-item pr-5">
+                                <p>Order Number : <span> <b>{{order.order_number}}</b></span></p>
+                                <p>Transaction ID : <span><b>{{order.payment.transaction_id}}</b></span></p>
+                              </div>
+                              <div class="order-info-item">
+                                <p>Order Date :  <span><b>{{order.created_at}}</b></span></p>
+
+                                <p>Payment Method  :  <span><b>{{order.payment_method}}</b></span></p>
+                                
+                              </div>
+                  
+                            </div>
+                            <hr>
+                  
+                  
+                            <div class="table-div justify-content-center d-flex">
+                              <div class="table-design">
+                                <table class="table table-md" >
+                                  
+                                  <tbody>
+                                    {% for item in ordered_food %}
+                                      <td><img src="{{item.product_item.image.url}}" alt="pic" width="80"></td>                          
+                      
+                                      <td>{{item.product_item.product_title}}
+                                        <span><small>{{item.product_item.vendor.vendor_name}} </small></span>  
+                                      </td>                                
+                  
+                                      <td>Qty {{item.quantity}}</td>                                
+                                      <td>Price {{item.price}}</td>
+                                      <td >Php. <span style="color:rgb(232, 61, 61);"> {{item.amount}}</span></td>
+                                      
+                  
+                                    </tr>
+                                    {% endfor %}
+                  
+                                    
+                                  </tbody>
+                        
+                                </table>
+                  
+                                <div class="row ">
+                                  <div class="d-flex justify-content-center col-md-6">
+                                    <img src="{% static 'images/paid.png'%}" alt="paid" width="200">
+                                  </div>
+                                  <div class="summary-div  col-md-6">
+                                    <div class="menu-item-holder-div">
+                                      <ul>
+                                        <!-- subtotal -->
+                                        <li style="list-style-type: None;">
+                                          Subtotal
+                                          <span class="price float-right" >
+                                            <span class="currency" >$</span>
+                                            <span id="subtotal" >{{subtotal}}</span>
+                                          </span>
+                                        </li>
+                  
+                                        <!-- tax -->
+                                        {% for key, value in tax_dict.items %}
+                                          {% for  percentage,  tax_amount in value.items%}
+                                            <li class="tax-line" style="list-style-type: None; " >
+                                              {{key}} <small>({{percentage}}%)</small>
+                                              <span class="price float-right">
+                                              <span class="currency" >$</span>
+                                              <span id="tax-{{key}}">{{tax_amount}}</span>
+                                              </span>
+                                            </li>
+                                          {% endfor %}
+                                        {% endfor %}
+                  
+                                        <!-- grand total -->
+                                        <li style="list-style-type: None;">
+                                          TOTAL
+                                          <span class="price float-right">
+                                            <span class="currency" >$</span>
+                                            <span id="total">{{grandtotal}}</span>
+                                          </span>
+                                        </li>
+                                        <!-- <a href="{% url 'checkout' %}" class="btn btn-danger w-100 p-2 mt-3" >PROCEED TO CHECKOUT</a> -->
+                  
+                  
+                                      </ul>
+                                    </div>
+                                  </div>
+                  
+                                </div>
+                                
+                                <hr>
+                                <div class="d-flex justify-content-around">
+                                  
+                                  <div class="footer-item d-flex justify-content-end align-items-end">
+                                    <span><b>Thank you for ordering with us </b></span>
+                                    
+                                  </div>        
+                                    <div class="footer-item d-flex justify-content-end align-items-end">
+                                      <span>Need Help</span>
+                                      <span>call xxx-xxx-xxx</span>
+                                    </div>
+                                  </div>
+                                
+                              </div>
+                      
+                            </div>
+                  
+                          </div>
+                        </div>
+                      </div>
+                  
+                    </div>
+                  
+                  </div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Main Section End -->
+		<script src="{% static 'js/app_customer_dashboard.js' %}" ></script> 
+
+
+{% endblock %}

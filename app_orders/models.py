@@ -1,8 +1,12 @@
+import json
 from django.db import models
 from accounts.models import User
 from menu.models import Product_Menu
+from vendor.models import Vendor
 
 # Create your models here.
+
+request_object =''
 
 class Payment(models.Model):
   PAYMENT_METHOD =(
@@ -30,6 +34,8 @@ class Order(models.Model):
   payment = models.ForeignKey(Payment, on_delete=models.SET_NULL, null = True, blank = True)
   order_number = models.CharField(max_length=30)
 
+  vendors = models.ManyToManyField(Vendor,blank=True)
+
   
   # coming from billing address
   first_name = models.CharField(max_length=50)
@@ -43,8 +49,10 @@ class Order(models.Model):
   pin_code = models.CharField(max_length=10 )
   
   total = models.FloatField()
-  tax_data= models.JSONField(blank=True,help_text="Data format:{'tax_type':{'tax_percentage':'tax_amount'}}")
+  tax_data= models.JSONField(blank=True, null = True,help_text="Data format:{'tax_type':{'tax_percentage':'tax_amount'}}")
   total_tax = models.FloatField()
+
+  total_data =models.JSONField(blank=True, null = True)
 
   payment_method =  models.CharField(max_length=25 )
   status =  models.CharField(max_length=15, choices=STATUS , default='New')
@@ -56,6 +64,57 @@ class Order(models.Model):
     return f'{self.first_name} {self.last_name}'
   def __str__(self):
     return self.order_number
+  
+  def get_total_by_vendor(self):
+    vendor = Vendor.objects.get(user=request_object.user)
+
+    if self.total_data :
+      total_data =json.loads(self.total_data)
+      data = total_data.get(str(vendor.id))
+      print(f'*** models *** {data}')
+      subtotal = 0
+      tax = 0
+      tax_dict ={}
+      tax_total=0
+      for key, val in data.items():
+        print(f'-->> key :{ key}, value : {val} ')
+        
+        subtotal += float(key)
+        
+        print(f'val before  : {val}')
+        val= val.replace("'", '"')
+        print(f'val after  : {val}')
+
+        val=json.loads(val)
+        print(f'val json loads  : {val}')
+
+        tax_dict.update(val)
+        print(f' type of subtotal {type(subtotal)}, tax_dict {tax_dict}')
+        # calculate tax
+        # {'VAT': {'8.00': '3.36'}, 'Salestax': {'3.00': '1.26'}}
+       
+        for i in val:
+          for j in val[i]:
+            print(val[i][j])
+            tax_total+= float(val[i][j])
+    grandtotal = subtotal +   tax_total 
+    print(f'--->>>final data extract')
+    print(f'data : {data}')
+    print(f'tax_dict : {tax_dict}')
+    print(f'total purchase:{subtotal }')
+    print(f'tax_total : {tax_total}')
+    print(f'--->>>grandtotal :{grandtotal}\n\n')    
+    context={'subtotal':subtotal,
+             'tax_dict':tax_dict,
+             'tax_total':tax_total,
+             'grandtotal':grandtotal
+
+    }
+            
+        
+
+    return context
+
   
 class OrderedFood(models.Model) :
   order = models.ForeignKey(Order, on_delete=models.CASCADE)

@@ -18,7 +18,8 @@ from django.template.defaultfilters import slugify
 
 
 from .error_printscr import print_message
-from app_orders.models import Order
+from app_orders.models import Order, OrderedFood
+import datetime
 
 '''
 restrict the vendor from accessing customer page
@@ -203,7 +204,42 @@ def myAccount(request):
 def dashboardVendor(request):
     
   vendor = Vendor.objects.get(user=request.user)
-  context={'vendor':vendor,}
+
+  orders = Order.objects.filter(vendors__in=[vendor.id], is_ordered=True).order_by('-created_at')
+  recent_orders = orders[0:5]
+
+
+  ''' get the total revenue'''
+  revenue=0
+  for item in orders:
+    revenue += item.get_total_by_vendor()['grandtotal']
+
+
+  ''' get the current month revenue'''
+  current_month  = datetime.datetime.now().month 
+  current_year  = datetime.datetime.now().year 
+  print(f'--->>>*** Month: {current_month}, year : {current_year}')
+
+
+  current_month_orders = orders.filter(is_ordered = True, 
+                                       vendors__in=[vendor.id],created_at__month = current_month, created_at__year= current_year )
+
+  
+  month_revenue = 0
+  for item in current_month_orders:
+
+
+    month_revenue += item.get_total_by_vendor()['grandtotal']
+
+
+  orders_count =orders.count()
+  context={
+    'vendor':vendor,
+    'orders':orders,
+    'orders_count':orders_count,
+    'recent_orders':recent_orders,
+    'revenue':revenue,'month_revenue':month_revenue,
+    }
   return render(request,'accounts/dashboardVendor.html',context)
 
 @login_required(login_url='login')

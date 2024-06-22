@@ -9,8 +9,7 @@
 
 		<!-- Main Section Start -->
 		<div class="main-section">
-			{% include 'app_customers/app-customer-cover.html'%}
-
+			{% include 'include/cover.html' %}
 	
 
 			<div class="page-section account-header buyer-logged-in">
@@ -18,7 +17,7 @@
 					<div class="row">
 						<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
               <!-- load sidebar -->
-              {% include 'include/sidebar_cust.html' %}
+              {% include 'include/sidebar_vend.html' %}
 						</div>
 						<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
 							<div class="user-dashboard loader-holder">
@@ -40,7 +39,7 @@
 												<div class="responsive-table">
 													
 													<div class = "orders-table">
-														<table  id="myordersTable" class="table table-striped">
+														<table id="myordersTable" class="table table-striped">
 															<thead>
 																<tr>
 																	<th scope="col">Order #</th>
@@ -56,13 +55,14 @@
 															<tbody>
 																{% for item in orders %}
 																<tr>
-																	<td><b><a class = "text-dark" href="{% url 'app_customers:order-details' item.order_number %} ">{{item.order_number}}</a></b></td>
+																	<td><b><a class = "text-dark" href="{% url 'vendor:vendor-order-details' item.order_number %} ">{{item.order_number}}</a></b></td>
 																	<td>{{item.created_at}}</td>
 																	<td>{{item.name}}</td>
 
-																	<td>Php.{{item.total}}</td>
+																	<td>Php.{{item.get_total_by_vendor.grandtotal}}</td>
+
 																	<td>{{item.is_ordered}}</td>
-																	<td><a href="{% url 'app_customers:order-details' item.order_number %} " class="btn btn-success" >View Order</a></td>
+																	<td><a href="{% url 'vendor:vendor-order-details' item.order_number %} " class="btn btn-success" >View Order</a></td>
 																</tr>
 																{% endfor %}
 																

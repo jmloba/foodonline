@@ -1,3 +1,4 @@
+import json
 from django.http import HttpResponse,JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.db import IntegrityError
@@ -5,6 +6,7 @@ from vendor.forms import VendorRegistrationForm, OpeningHourForm
 
 from accounts.forms import UserProfileForm 
 from accounts.models import UserProfile
+from app_orders.models import Order, OrderedFood
 from .models import Vendor,OpeningHour
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -252,5 +254,47 @@ def remove_opening_hours(request,pk=None):
 
   return HttpResponse('remove opening hours ')
 
+# vendor order details view
+''' note  for tax calculations:
+1. subtotal
+2. tax  
+  tax type
+  tax percentage
+  tax amound
+3. grand total
 
-  
+{"vendor_id":{"subtotal":{"tax type":{"tax_percentage":"tax_amount"}}}}
+
+
+'''
+def vendor_order_details(request,order_number=None):
+  total_amount = 0
+  try :
+    order = Order.objects.get(order_number=order_number, is_ordered=True)
+
+    ordered_food = OrderedFood.objects.filter(order=order, product_item__vendor=get_vendor(request))
+    for i in ordered_food:
+      total_amount  += (i.quantity * i.price)
+
+
+    # tax_dict= json.loads(order.tax_data  )
+   
+  except:
+    return redirect('vendor:vendor')  
+  context ={
+    'order': order,
+    'ordered_food':ordered_food, 
+    'total_amount':total_amount,
+    'subtotal': order.get_total_by_vendor()['subtotal'],
+    'tax_dict': order.get_total_by_vendor()['tax_dict'],
+    'grandtotal': order.get_total_by_vendor()['grandtotal'],
+
+    }
+  return render(request,'vendor/vendor_order_details.html', context)
+
+def vendor_my_orders(request):
+  vendor = Vendor.objects.get(user = request.user)
+  orders = Order.objects.filter(vendors__in=[vendor.id], is_ordered = True).order_by('-created_at')
+
+  context={'vendor': vendor, 'orders':orders}
+  return render(request,'vendor/my_orders.html', context)

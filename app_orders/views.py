@@ -1,10 +1,12 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse,JsonResponse
 # Create your views here.
-from marketplace.models import Cart
+from marketplace.models import Cart, Tax
 from marketplace.context_processor import get_cart_amount
 from app_orders.forms import OrderForm
 from app_orders.models import Order,Payment, OrderedFood
+from menu.models import Product_Menu 
+
 import simplejson as json
 from app_orders.utils import generate_order_number
 from accounts.utils import send_notification,reformat_date
@@ -17,6 +19,52 @@ def place_order(request) :
   if cart_count <=0 :
     return redirect('marketplace:marketplace')
   
+  ''' to add vendors_id in vendors field (vendors in one invoice)'''
+  vendors_id = []
+  for i in cart_items:
+    if ( i.product_item.vendor.id) not in vendors_id:
+      vendors_id.append(i.product_item.vendor.id)
+
+  print(f'\n\n --->>>> list of vendors in an order : : {vendors_id}')  
+
+  ''' to make summary of each vendor's subtotal and taxes :
+  {'vendor_id':{'subtotal':{'tax_type':{'percentage_tax':'tax_amount'}}}}
+  '''
+  total_data = {}
+  get_tax = Tax.objects.filter(is_active=True)
+  subtotal=0
+  k={}
+  for i in cart_items:
+    product_item = Product_Menu.objects.get(pk=i.product_item.id, vendor_id__in=vendors_id  )
+    print(f'--->>   product item : {product_item} ,{product_item.vendor.id}')
+    v_id = product_item.vendor.id 
+    if v_id in k:
+      # get the sub total of vendor id
+      subtotal = k[v_id]
+      # add the subtotal of new record
+      subtotal += (product_item.price* i.quantity)
+      # store the new subtotal to vendor id
+      k[v_id]=subtotal
+    else  :
+      # if vendor does not exist
+      subtotal = (product_item.price* i.quantity)
+      # k.append(v_id)
+      k[v_id]= subtotal
+
+    #calculate the tax data
+    tax_dict={}
+    for i  in get_tax:
+      tax_type = i.tax_type
+      tax_percentage =i.tax_percentage
+      tax_amount = round((tax_percentage* subtotal)/100,2)
+      tax_dict.update({tax_type:{str(tax_percentage):str(tax_amount)}})
+    print(f'-- >> tax dictionary : {tax_dict}')  
+    # construct total data
+    total_data.update({product_item.vendor.id:{str(subtotal):str(tax_dict)}})
+    print(f'\n --->> total data : {total_data}')
+  print(f"--->>>> vendor's id: : {vendors_id}")  
+  print(f'\n list of vendor : {k}')
+
   # get from marketplace -> context processor
   subtotal= get_cart_amount(request)['subtotal']
   total_tax= get_cart_amount(request)['tax']
@@ -40,12 +88,17 @@ def place_order(request) :
       order.pin_code = form.cleaned_data['pin_code']
       
       order.total = grand_total
+
       order.tax_data =json.dumps(tax_dict)
       order.total_tax = total_tax
+
+      order.total_data=json.dupms(total_data)
+      
       order.payment_method = request.POST['payment_method']
       order.save()
       
       order.order_number = generate_order_number(order.id)
+      order.vendors.add(*vendors_id)
       order.save()
       
       context = {'cart_items': cart_items, 'order': order,

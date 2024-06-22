@@ -2,6 +2,7 @@ from django.urls import path, include
 from . import views
 from accounts import views as AccountViews
 
+app_name = 'vendor'
 
 urlpatterns = [
   path('',AccountViews.dashboardVendor, name='vendor' ),
@@ -17,15 +18,17 @@ urlpatterns = [
   # food item CRUD
   path('menu-builder/product-item/add', views.product_item_add, name ='product_item_add'),
   path('menu-builder/product-item_edit/<int:pk>', views.product_item_edit, name ='product_item_edit'),
-  
   path('menu-builder/product-item_delete/<int:pk>', views.product_item_delete, name ='product_item_delete'),
 
   # opening hours CRUD
   path('opening_hours/', views.opening_hours, name ='opening_hours'),
-
   path('opening_hours/add/', views.add_opening_hours, name ='add_opening_hours'),
-
-  
   path('opening_hours/remove/<int:pk>/', views.remove_opening_hours, name ='remove_opening_hours'),
+
+  # order details
+  path('vendor_order_details/<str:order_number>/', views.vendor_order_details, name ='vendor-order-details'),
+
+  # my orders
+  path('vendor_my_orders/', views.vendor_my_orders, name ='vendor-my-orders'),
 ]
 

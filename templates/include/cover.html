@@ -3,7 +3,7 @@
 <div class="page-section restaurant-detail-image-section" style=" background: url( 
 
   {% if vendor.user_profile.cover_Photo %}
-  {{vendor.user_profile.cover_Photo.url }}
+  {{ vendor.user_profile.cover_Photo.url }}
   {% else %}
    {% static 'images/default-cover.png' %}
   {% endif %}
@@ -30,6 +30,7 @@
                
                 {% endif %}
               </figure>
+
             </div>
 
             <div class="text-holder">

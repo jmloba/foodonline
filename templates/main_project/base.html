@@ -49,6 +49,17 @@
 	<script src="https://maps.googleapis.com/maps/api/js?key={{GOOGLE_API_KEY}}&libraries=places&callback=initAutoComplete"   defer ></script>
 	{% endif %}
 
+	<!-- datatables plugin -->
+	 <link rel="stylesheet" href="//cdn.datatables.net/2.0.8/css/dataTables.dataTables.min.css">
+
+
+<script src="//cdn.datatables.net/2.0.8/js/dataTables.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('#myordersTable').dataTable();
+});
+
+</script>
 
 	<style>
 		body, .main-section p, .mce-content-body p{

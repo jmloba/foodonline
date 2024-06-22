@@ -22,10 +22,8 @@
 						<div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
 							<div class="user-dashboard loader-holder">
 								<div class="user-holder">
-									<!-- overview -->
 									<h5 class="text-uppercase">Overview </h5>
-								
-									<div class="row">
+									<div class="row" style="background-color: beige; padding: 10px;">
 									<!-- overview total orders-->
 										<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 											<div class="card">
@@ -33,13 +31,12 @@
 													total Orders
 												</div>
 												<div class="card-body text-center">
-													mike
+													{{orders_count}}
 
 												</div>
 											</div>
 									  </div>	
 									<!-- overview REvenue -->
-
 										<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 											<div class="card">
 												<div class="card-header">
@@ -47,14 +44,13 @@
 												</div>
 												<div class="card-body text-center">
 													<a href="#"> 
-														<h5 class="card-title">$12345</h5>
+														<h5 class="card-title">${{revenue | floatformat:2}}</h5>
 													</a>
 
 												</div>
 											</div>
 									  </div>	
 									<!-- overview month REvenue -->
-
 										<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
 											<div class="card">
 												<div class="card-header">
@@ -62,79 +58,57 @@
 												</div>
 												<div class="card-body text-center">
 													<a href="#"> 
-														<h5 class="card-title">$12345</h5>
+														<h5 class="card-title">${{month_revenue|floatformat:2}}</h5>
 													</a>
 
 												</div>
 											</div>
 									  </div>	
-										
-
 									</div>
 									<!-- overview end -->									
-									<br><br>
-									
-									<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-										<div class="row">
-											<div class="element-title has-border right-filters-row">
-												<h5>Recent Orders</h5>
-												<div class="right-filters row pull-right">
-													<div class="col-lg-6 col-md-6 col-xs-6">
-														<div class="input-field">
-															<select class="chosen-select-no-single">
-																<option selected="selected" value="">Select Orders Status</option>
-																<option value="Processing">Processing</option>
-																<option value="Cancelled">Cancelled</option>
-																<option value="Completed">Completed</option>
-															</select>
-														</div>
-													</div>
-													
-												</div>
-											</div>
-										</div>
-									</div>
+									<br>
+
+									<!-- overview -->
+									<h5 class="text-uppercase">Recent Orders </h5>
+									<p class="text-right"><small style="color : rgb(23, 23, 74);">Logged in as</small> <b style="color :rgb(200, 104, 15);">{{request.user}}</b></p>
+
 									<div class="row">
 										<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 											<div class="user-orders-list">
 												<div class="responsive-table">
-													<ul class="table-generic">
-														<li class="order-heading-titles">
-															<div>Order id</div>
-															<div>Date</div>
-															<div>Total Price</div>
-															<div>Charges</div>
-															<div>Received</div>
-															<div>Status</div>
-														</li>
-														<li class="order-heading-titles">
-															<div><a href="#" data-toggle="modal" data-target="#order-det-22606">order-22606</a></div>
-															<div>Apr 9,2020</div>
-															<div>£ 38.99</div>
-															<div>£ 3.90</div>
-															<div>£ 35.09</div>
-															<div><span class="order-status" style="background-color: #047a06;">Completed</span></div>
-														</li>
-														
-														
-														
-														<li class="order-heading-titles">
-															<div><a href="#" data-toggle="modal" data-target="#order-det-22606">order-22583</a></div>
-															<div>Apr 9,2020</div>
-															<div>£ 26.22</div>
-															<div>£ 2.62</div>
-															<div>£ 23.60</div>
-															<div><span class="order-status" style="background-color: #1e73be;">Processing</span></div>
-														</li>
-														<li class="order-heading-titles">
-															<div><a href="#" data-toggle="modal" data-target="#order-det-22606">order-22493</a></div>
-															<div>Apr 2,2020</div>
-															<div>£ 28.24</div>
-															<div>£ 2.82</div>
-															<div>£ 25.42</div>
-															<div><span class="order-status" style="background-color: #047a06;">Completed</span></div>
-														</li>
-													</ul>
+													<div class = "orders-table">
+														<table id="myordersTable" class="table table-striped">
+															<thead>
+																<tr>
+																	<th scope="col">Order #</th>
+																	<th scope="col">Date</th>
+
+																	<th scope="col">Name</th>
+																	
+																	<th scope="col">Total Amout</th>
+																	<th scope="col">Status</th>
+																	<th scope="col">Action</th>
+																</tr>
+															</thead>
+															<tbody>
+																{% for order in recent_orders %}
+																<tr>
+																	<td>{{order.order_number}}</td>
+																	<td>{{order.created_at}}</td>
+																	<td>{{order.name}}</td>
+
+																	<td>Php.{{order.get_total_by_vendor.grandtotal}}</td>
+																	<td>{{order.is_ordered}}</td>
+																	<td>
+																		<a href="{% url 'vendor:vendor-order-details' order.order_number %}" class="btn btn-success"
+																		 >details</a>
+																	</td>
+																</tr>
+																{% endfor %}
+																
+															</tbody>
+														</table>
+													</div>
 
 												</div>												
 											</div>
@@ -149,6 +123,7 @@
 			</div>
 		</div>
 		<!-- Main Section End -->
+		 <link rel="stylesheet" href="{% static 'css/dashboardVendor.css' %}">
 
 
 
