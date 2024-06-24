@@ -24,7 +24,6 @@ def detectUser(user):
 def send_verification_email(request,user,mail_subject,email_template):
   from_email = settings.DEFAULT_FROM_EMAIL
   current_site = get_current_site(request) 
- 
   message =render_to_string(email_template,      
         {
         'user':user,
@@ -35,6 +34,9 @@ def send_verification_email(request,user,mail_subject,email_template):
         )
   to_email = user.email
   mail = EmailMessage(mail_subject,message, to=[to_email])
+  #sending email in html format
+  mail.content_subtype = 'html'
+  
   mail.send()
 
 
@@ -48,9 +50,8 @@ def send_notification(mail_subject, mail_template, context):
     to_email.append(context['to_email'])
   else:  
     to_email = context['to_email']
-
-
   mail = EmailMessage(mail_subject,message, to=to_email)
+  mail.content_subtype = 'html'
   mail.send()
 
   return

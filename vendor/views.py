@@ -87,7 +87,7 @@ def product_category_add(request):
        category.slug= slugify(category_name) +'-'+str(category.id)
        category.save()
        messages.success(request, 'Category was added successfuly')
-       return redirect('menu_builder')
+       return redirect('vendor:menu_builder')
     else :
       messages.info(request, form.errors)
       print(form.errors)
@@ -109,7 +109,7 @@ def product_category_edit(request,pk=None):
        category.slug= slugify(category_name)
        form.save()
        messages.success(request, 'Category was update successfuly')
-       return redirect('menu_builder')
+       return redirect('vendor:menu_builder')
     else :
       messages.info(request, form.errors)
       print(form.errors)
@@ -146,7 +146,7 @@ def product_item_add(request):
         form.save()
 
         messages.success(request, 'Product item was added successfuly')
-        return redirect('fooditems_by_category',product.category.id)
+        return redirect('vendor:fooditems_by_category',product.category.id)
     else :
       messages.info(request, form.errors)
       print(form.errors)
@@ -174,13 +174,13 @@ def product_item_edit(request,pk=None):
       product.slug= slugify(product_title)
       form.save()
       messages.success(request, 'Category was updated successfuly')
-      return redirect('fooditems_by_category',product.category.id)
+      return redirect('vendor:fooditems_by_category',product.category.id)
     else :
       messages.info(request, form.errors)
       print(form.errors)
   else:
     form = ProductItemForm(instance=product)
-    form.fields['category'].queryset = Category.objects(vendor=get_vendor(request))
+    form.fields['category'].queryset = Category.objects.filter(vendor=get_vendor(request))
   
   context={'form':form,'product':product}
   return render(request,'vendor/product_item_edit.html',context)

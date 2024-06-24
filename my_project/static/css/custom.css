@@ -97,3 +97,99 @@ input.submit-button:hover{
  
 }
 
+@media only screen and (max-width:480px){
+  a.get-start-btn {
+    display: block;
+    margin-top: 10px;
+    margin-left: 0;
+    margin-bottom: 5px;
+  }
+  .main-search-bar{
+    padding-top : 1em !important;
+    padding-bottom : 30px !important;
+    background-position: left !important;
+  }
+  .page-section{
+    padding-top : 1em !important;
+    padding-bottom :10px !important;
+  }
+  .main-search{
+    padding-bottom :30px !important;
+    
+  }
+  figure{
+    margin-left : 20px !important;
+    padding-left: 10px;
+  }
+  .list-post {
+    margin-left : 20px !important;
+  }
+  .user-dashboard{
+    width: 100% !important;
+  }
+  .menu-itam-holder .quantity{
+    color : red;
+    right: 0 !important;
+    margin-top : -30px !important;
+
+  }
+  .table.opening_hours{
+    width : 100% !important;
+
+  }
+  .table td{
+    padding : 0.5rem;
+  }
+  
+}
+@media only screen and (max-width:630px){
+  a.get-start-btn {
+    display: block;
+    margin-top: 10px;
+    margin-left: 0;
+    margin-bottom: 5px;
+  }
+  .main-search-bar{
+    padding-top : 1em !important;
+    padding-bottom : 30px !important;
+    background-position: left !important;
+  }  
+  figure{
+    margin-left : 20px !important;
+    padding-left: 10px;
+  }
+  .list-post {
+    margin-left : 20px !important;
+  }
+  .field-holder{
+    width: 100% !important;
+  }
+  .table.opening_hours{
+    width : 100% !important;
+
+  }
+  .table td{
+    padding : 0.5rem;
+  }
+
+
+}
+@media only screen and (max-width:1200px){
+  a.get-start-btn {
+    display: flex;
+    margin-top: 10px;
+    margin-left: 0;
+    margin-bottom: 5px;
+  }
+  .main-search-bar{
+    padding-top : 1em !important;
+    padding-bottom : 30px !important;
+    background-position: left !important;
+  }  
+
+  
+}
+
+table td, table th{
+  line-height: 1rem !important;
+}

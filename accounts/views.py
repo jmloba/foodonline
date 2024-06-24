@@ -136,6 +136,7 @@ def registerUser(request):
       mail_subject= 'Please Activate your Account ' 
       email_template = 'accounts/email/account_verification.html'      
       send_verification_email(request,user,mail_subject,email_template )
+      
       ''' SEND Verification Email *** END'''
       messages.success(request,'Your account has been registered successfully')
       mess = f'**joven**   views.accounts--->> user is created : {username}'

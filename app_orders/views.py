@@ -8,9 +8,12 @@ from app_orders.models import Order,Payment, OrderedFood
 from menu.models import Product_Menu 
 
 import simplejson as json
-from app_orders.utils import generate_order_number
+from app_orders.utils import generate_order_number,order_total_by_vendor
+
 from accounts.utils import send_notification,reformat_date
 from django.contrib.auth.decorators import login_required
+from django.contrib.sites.shortcuts import get_current_site
+
 
 @login_required(login_url='login')
 def place_order(request) :
@@ -92,7 +95,7 @@ def place_order(request) :
       order.tax_data =json.dumps(tax_dict)
       order.total_tax = total_tax
 
-      order.total_data=json.dupms(total_data)
+      order.total_data=json.dumps(total_data)
       
       order.payment_method = request.POST['payment_method']
       order.save()
@@ -124,27 +127,60 @@ def place_order(request) :
   return render(request,'app_orders/place-order.html', context)
 
 
-def send_to_email(request, cart_items, order) :
-    #send email
-    mail_subject = 'Your Orders has been processed'
-    mail_template = 'accounts/email/payment_notification.html'
-    
-    context = {'user':request.user, 'order':order,'to_email':order.email}
+# ===============sending email ===============
+def sending_email(request, cart_items, order) :
+  ''' 1. send order confirmation to the customer'''    
+  mail_subject = 'Thank you for ordering with us'
+  mail_template = 'app_orders/email/order_confirmation_email.html'
 
-    send_notification(mail_subject, mail_template, context)
+  ordered_food=OrderedFood.objects.filter(order=order)
 
-    # send order received to the vendor     
-    print(f'sending notification to vendors')
-    mail_subject = 'You have a new order'
-    mail_template = 'accounts/email/vendor_notification.html'
-    to_emails =[]
-    for i in cart_items:
-      if i.product_item.vendor.user.email not in to_emails:
-        to_emails.append(i.product_item.vendor.user.email)
-    print(f'to emails : {to_emails}')    
+  customer_subtotal = 0
+  for item in ordered_food:
+    customer_subtotal += (item.price * item.quantity)
+  tax_data = json.loads(order.tax_data)  
 
-    context = {'user':request.user, 'order':order,'to_email':to_emails}
-    send_notification(mail_subject, mail_template, context)    
+  print(f'before {order}')
+  context = {
+    'user':request.user, 
+    'order':order,
+    'to_email':order.email,
+    'ordered_food':ordered_food,
+    'domain': get_current_site(request), 
+    'customer_subtotal':customer_subtotal,
+    'tax_data': tax_data
+              }
+  send_notification(mail_subject, mail_template, context)
+
+
+  ''' 2. send order received -->>to the vendor  ''' 
+  print(f'sending notification to vendors')
+
+  mail_subject = 'You have a new order'
+  # mail_template = 'accounts/email/vendor_notification.html'
+  mail_template = 'app_orders/email/new_order_received.html'
+
+  to_emails =[]
+  for i in cart_items:
+    if i.product_item.vendor.user.email not in to_emails:
+      to_emails.append(i.product_item.vendor.user.email)
+
+      ''' get the specific ordered food '''
+      ordered_food_to_vendor = OrderedFood.objects.filter(order=order, product_item__vendor=i.product_item.vendor)
+
+      print(f'\n\n--->>>*** ordered food from vendor : {ordered_food_to_vendor}')
+      print(f' \n\n\n final **** to emails  ****: {to_emails}')    
+      context = {
+        'user':request.user, 
+        'order':order,
+        # 'to_email':to_emails,
+        'to_email':i.product_item.vendor.user.email,
+        'ordered_food_to_vendor':ordered_food_to_vendor,
+        'vendor_subtotal': order_total_by_vendor(order, i.product_item.vendor.id)['subtotal'],
+        'tax_data':order_total_by_vendor(order, i.product_item.vendor.id)['tax_dict'],
+        'vendor_grand_total':order_total_by_vendor(order, i.product_item.vendor.id)['grandtotal'],
+        }
+      send_notification(mail_subject, mail_template, context)    
 
 
 @login_required(login_url='login')
@@ -172,6 +208,7 @@ def save_to_payment(request):
 
     )
     payment.save()
+
     # update order model
     order.payment = payment
     order.is_ordered=True
@@ -195,11 +232,9 @@ def save_to_payment(request):
       # total amount
       ordered_food.amount = item.product_item.price * item.quantity
       ordered_food.save()
-
-
-
-    # joven- uncomment these sending emails *** daily limit email
-    # send_to_email(request, cart_items, order)
+ 
+    
+    sending_email(request, cart_items, order)
 
     #clear cart
     # cart_items.delete()

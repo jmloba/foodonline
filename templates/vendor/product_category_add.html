@@ -29,7 +29,7 @@
 									<a href="#" class="btn btn-success float-right m1">Add Food <i class="fa-solid fa-plus"></i></a>
 									<a href="#" class="btn btn-warning    float-right m1">Add Categories <i class="fa-solid fa-plus"></i></a> -->
 									<div>
-										<form action="{% url 'product_category_add' %}" method="POST">
+										<form action="{% url 'vendor:product_category_add' %}" method="POST">
 											{% csrf_token %}
 											<!-- {{form}} -->
 											<div class="form-fields-set">
